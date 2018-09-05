@@ -9,13 +9,14 @@ namespace Tumblr.NetStandard
     {
         Action<string> OnError { get; set; }
 
-        Task<ApiResponse<BlogPostResult>> BlogPosts(string name);
-        Task<ApiResponse<DashboardResult>> Dashboard();
-        Task<ApiResponse<UserLikeResult>> Likes();
-        Task<ApiResponse<FollowingResult>> Following(int offset = 0);
-        Task<ApiResponse<UserInfoResult>> UserInfo();
-        Task<ApiResponse<bool>> Like(long postId, string reblogKey);
-        Task<ApiResponse<bool>> Unlike(long postId, string reblogKey);
-        Task<ApiResponse<Post[]>> Tagged(string searchTerm);
+        ITumblrUserMethods User { get; }
+
+        ITumblrBlogMethods ForBlog(string blogName);
+
+        ITumblrPostMethods ForPost(Post post);
+
+        ITumblrPostMethods ForPost(long id, string reblogKey);
+
+        Task<ApiResponse<Post[]>> Tagged(string tag);
     }
 }
