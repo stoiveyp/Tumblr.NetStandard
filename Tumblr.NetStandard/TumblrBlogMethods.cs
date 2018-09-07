@@ -21,6 +21,17 @@ namespace Tumblr.NetStandard
             return ClientDetail.MakeGetRequest<BlogPostResult>(uri);
         }
 
+        public Task<ApiResponse<BlogPostResult>> Posts(int offset, int pageSize)
+        {
+            var posts = ClientDetail.StandardPostDictionary;
+
+            posts.Add("offset", offset.ToString());
+            posts.Add("limit",pageSize.ToString());
+
+            var uri = ClientDetail.CreateUri(ApiPath(BlogName, BlogApiPart.Posts), posts);
+            return ClientDetail.MakeGetRequest<BlogPostResult>(uri);
+        }
+
         private string ApiPath(string candidate, BlogApiPart blogPart)
         {
             return $"blog/{candidate}{(!candidate.Contains(".") ? ".tumblr.com" : string.Empty)}/{TranslatePart(blogPart)}";

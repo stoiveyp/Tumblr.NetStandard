@@ -26,9 +26,19 @@ namespace Tumblr.NetStandard
             return ClientDetail.MakeGetRequest<DashboardResult>(uri);
         }
 
-        public Task<ApiResponse<DashboardResult>> Dashboard(int offset, int size)
+        public Task<ApiResponse<DashboardResult>> Dashboard(int offset, int limit)
         {
-            throw new NotImplementedException();
+            if (ClientDetail.UseApiKey)
+            {
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<DashboardResult>());
+            }
+
+            var posts = ClientDetail.StandardPostDictionary;
+            posts.Add("offset", offset.ToString());
+            posts.Add("limit", limit.ToString());
+
+            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Dashboard), posts);
+            return ClientDetail.MakeGetRequest<DashboardResult>(uri);
         }
 
         public Task<ApiResponse<UserLikeResult>> Likes()
