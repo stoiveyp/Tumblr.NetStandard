@@ -20,8 +20,7 @@ namespace Tumblr.NetStandard
         public bool UseApiKey { get; set; }
         public TumblrClientCredentials ClientCreds { get; set; }
         public Action<string> OnError { get; set; }
-
-        public readonly Dictionary<string, string> StandardPostDictionary = new Dictionary<string, string>
+        public Dictionary<string, string> StandardPostDictionary => new Dictionary<string, string>
             {{"notes_info", "true"}, {"reblog_info", "true"}};
 
         public readonly JsonSerializer Serializer = JsonSerializer.Create(new JsonSerializerSettings
