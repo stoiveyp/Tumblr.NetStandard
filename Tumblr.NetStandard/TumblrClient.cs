@@ -13,32 +13,36 @@ namespace Tumblr.NetStandard
 
         public Action<string> OnError { get; set; }
 
-        public TumblrClient(TumblrClientCredentials consumer) : this(null, consumer)
+        public TumblrClient(TumblrClientCredentials client) : this(null, client)
         {
 
         }
 
-        public TumblrClient(HttpMessageHandler handler, TumblrClientCredentials consumer) : this(handler, consumer,
+        public TumblrClient(HttpMessageHandler handler, TumblrClientCredentials client) : this(handler, client,
             null)
         {
 
         }
 
-        public TumblrClient(TumblrClientCredentials consumer, TumblrCredentials token) : this(null, consumer, token)
+        public TumblrClient(TumblrClientCredentials client, TumblrCredentials token) : this(null, client, token)
         {
 
         }
 
-        public TumblrClient(HttpMessageHandler handler, TumblrClientCredentials consumer, TumblrCredentials token)
+        public TumblrClient(HttpMessageHandler handler, TumblrClientCredentials client, TumblrCredentials token)
         {
-            AccessToken accessToken = null;
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
             ClientDetail = new TumblrClientDetail
             {
-                ConsumerKey = consumer.Id,
+                ClientCreds = client
             };
 
 
-            if (string.IsNullOrWhiteSpace(token.Key) || string.IsNullOrWhiteSpace(token.Secret))
+            if (string.IsNullOrWhiteSpace(token?.Key) || string.IsNullOrWhiteSpace(token?.Secret))
             {
                 ClientDetail.UseApiKey = true;
             }
@@ -48,8 +52,8 @@ namespace Tumblr.NetStandard
             }
 
             var oAuthMessageHandler = handler == null
-                ? new OAuthMessageHandler(consumer.Id, consumer.Secret, accessToken)
-                : new OAuthMessageHandler(handler, consumer.Id, consumer.Secret, accessToken);
+                ? new OAuthMessageHandler(client, ClientDetail.AccessToken)
+                : new OAuthMessageHandler(handler, client, ClientDetail.AccessToken);
             ClientDetail.Client = new HttpClient(oAuthMessageHandler);
             ClientDetail.OnError = HandleError;
         }

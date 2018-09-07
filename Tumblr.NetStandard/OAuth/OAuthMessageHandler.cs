@@ -12,28 +12,26 @@ namespace Tumblr.NetStandard.OAuth
     // idea is based on http://blogs.msdn.com/b/henrikn/archive/2012/02/16/extending-httpclient-with-oauth-to-access-twitter.aspx
     public class OAuthMessageHandler : DelegatingHandler
     {
-        string consumerKey;
-        string consumerSecret;
-        Token token;
-        IEnumerable<KeyValuePair<string, string>> parameters;
+        private TumblrClientCredentials Client { get; }
+        Token Token;
+        readonly IEnumerable<KeyValuePair<string, string>> Parameters;
 
-        public OAuthMessageHandler(string consumerKey, string consumerSecret, Token token = null, IEnumerable<KeyValuePair<string, string>> optionalOAuthHeaderParameters = null)
-            : this(new HttpClientHandler(), consumerKey, consumerSecret, token, optionalOAuthHeaderParameters)
+        public OAuthMessageHandler(TumblrClientCredentials client, Token token = null, IEnumerable<KeyValuePair<string, string>> optionalOAuthHeaderParameters = null)
+            : this(new HttpClientHandler(), client, token, optionalOAuthHeaderParameters)
         {
         }
 
-        public OAuthMessageHandler(HttpMessageHandler innerHandler, string consumerKey, string consumerSecret, Token token = null, IEnumerable<KeyValuePair<string, string>> optionalOAuthHeaderParameters = null)
+        public OAuthMessageHandler(HttpMessageHandler innerHandler, TumblrClientCredentials client, Token token = null, IEnumerable<KeyValuePair<string, string>> optionalOAuthHeaderParameters = null)
             : base(innerHandler)
         {
-            this.consumerKey = consumerKey;
-            this.consumerSecret = consumerSecret;
-            this.token = token;
-            this.parameters = optionalOAuthHeaderParameters ?? Enumerable.Empty<KeyValuePair<string, string>>();
+            Client = client;
+            this.Token = token;
+            this.Parameters = optionalOAuthHeaderParameters ?? Enumerable.Empty<KeyValuePair<string, string>>();
         }
 
-        protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var sendParameter = parameters;
+            var sendParameter = Parameters;
             if (request.Method == HttpMethod.Post)
             {
                 // form url encoded content
@@ -51,21 +49,21 @@ namespace Tumblr.NetStandard.OAuth
                     var formPieces = new List<KeyValuePair<string, string>>();
                     foreach (var mfc in ((MultipartFormDataContent)request.Content))
                     {
-                        if(!(mfc is StringContent))
+                        if (!(mfc is StringContent))
                         {
                             continue;
                         }
-                        formPieces.Add(new KeyValuePair<string, string>(mfc.Headers.ContentDisposition.Name,await mfc.ReadAsStringAsync()));
+                        formPieces.Add(new KeyValuePair<string, string>(mfc.Headers.ContentDisposition.Name, await mfc.ReadAsStringAsync()));
                     }
                     sendParameter = sendParameter.Concat(formPieces);
                 }
             }
 
             var headerParams = OAuthUtility.BuildBasicParameters(
-                consumerKey, consumerSecret,
-                request.RequestUri.OriginalString, request.Method, token,
+                Client.Id, Client.Secret,
+                request.RequestUri.OriginalString, request.Method, Token,
                 sendParameter);
-            headerParams = headerParams.Concat(parameters);
+            headerParams = headerParams.Concat(Parameters);
 
             var header = headerParams.Select(p => p.Key + "=" + p.Value.Wrap("\"")).ToString(",");
             request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", header);

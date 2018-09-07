@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Tumblr.NetStandard
 {
@@ -6,6 +7,16 @@ namespace Tumblr.NetStandard
     {
         public TumblrCredentials(string key, string secret)
         {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (string.IsNullOrWhiteSpace(secret))
+            {
+                throw new ArgumentNullException(nameof(secret));
+            }
+
             Key = key;
             Secret = secret;
         }

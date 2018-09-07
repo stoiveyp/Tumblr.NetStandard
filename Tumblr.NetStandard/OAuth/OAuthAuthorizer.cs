@@ -11,13 +11,11 @@ namespace Tumblr.NetStandard.OAuth
     /// <summary>OAuth Authorization Client</summary>
     public class OAuthAuthorizer
     {
-        readonly string _consumerKey;
-        readonly string _consumerSecret;
+        private readonly TumblrClientCredentials Client;
 
-        public OAuthAuthorizer(string consumerKey, string consumerSecret)
+        public OAuthAuthorizer(TumblrClientCredentials client)
         {
-            _consumerKey = consumerKey;
-            _consumerSecret = consumerSecret;
+            Client = client;
         }
 
         async Task<TokenResponse<T>> GetTokenResponse<T>(string url, OAuthMessageHandler handler, HttpContent postValue, Func<string, string, T> tokenFactory) where T : Token
@@ -54,7 +52,7 @@ namespace Tumblr.NetStandard.OAuth
         {
             Precondition.NotNull(requestTokenUrl, "requestTokenUrl");
 
-            var handler = new OAuthMessageHandler(_consumerKey, _consumerSecret, token: null, optionalOAuthHeaderParameters: parameters);
+            var handler = new OAuthMessageHandler(Client, token: null, optionalOAuthHeaderParameters: parameters);
             return GetTokenResponse(requestTokenUrl, handler, postValue, (key, secret) => new RequestToken(key, secret));
         }
 
@@ -68,7 +66,7 @@ namespace Tumblr.NetStandard.OAuth
             var verifierParam = new KeyValuePair<string, string>("oauth_verifier", verifier.Trim());
 
             if (parameters == null) parameters = Enumerable.Empty<KeyValuePair<string, string>>();
-            var handler = new OAuthMessageHandler(_consumerKey, _consumerSecret, token: requestToken, optionalOAuthHeaderParameters: parameters.Concat(new[] { verifierParam }));
+            var handler = new OAuthMessageHandler(Client, token: requestToken, optionalOAuthHeaderParameters: parameters.Concat(new[] { verifierParam }));
 
             return GetTokenResponse(accessTokenUrl, handler, postValue, (key, secret) => new AccessToken(key, secret));
         }
