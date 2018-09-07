@@ -18,7 +18,7 @@ namespace Tumblr.NetStandard
         public HttpClient Client { get; set; }
         public AccessToken AccessToken { get; set; }
         public bool UseApiKey { get; set; }
-        public string ConsumerKey { get; set; }
+        public TumblrClientCredentials ClientCreds { get; set; }
         public Action<string> OnError { get; set; }
 
         public readonly Dictionary<string, string> StandardPostDictionary = new Dictionary<string, string>
@@ -50,7 +50,7 @@ namespace Tumblr.NetStandard
             queryValues = queryValues ?? new Dictionary<string, string>();
             if (UseApiKey)
             {
-                queryValues.Add("api_key", ConsumerKey);
+                queryValues.Add("api_key", ClientCreds.Id);
             }
 
             var iterate = queryValues.Select(kvp => $"{System.Net.WebUtility.UrlEncode(kvp.Key)}={System.Net.WebUtility.UrlEncode(kvp.Value)}");
