@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Tumblr.NetStandard.Models
 {
-    public class CommonPostData
+    public class CommonPostData:IAvatar
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -45,5 +45,6 @@ namespace Tumblr.NetStandard.Models
         [JsonProperty("state")]
         public string State { get; set; }
 
+        [JsonIgnore] public string BlogName => PostLink.Host;
     }
 }

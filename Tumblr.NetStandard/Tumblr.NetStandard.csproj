@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Steven Pears</Authors>
     <Description>A .NET Standard library for the Tumblr API</Description>
-    <PackageReleaseNotes>Initial port from UWP</PackageReleaseNotes>
+    <PackageReleaseNotes>Make post and reblog IAvatar objects</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/stoiveyp/Tumblr.NetStandard</RepositoryUrl>
     <PackageProjectUrl>https://github.com/stoiveyp/Tumblr.NetStandard</PackageProjectUrl>
   </PropertyGroup>

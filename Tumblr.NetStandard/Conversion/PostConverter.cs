@@ -24,6 +24,7 @@ namespace Tumblr.NetStandard.Conversion
             }
 
             string discriminator = (string)obj["type"];
+            bool isReblog = obj.ContainsKey("reblogged_from_id");
 
             Post post = CreatePost(discriminator);
 
@@ -56,7 +57,11 @@ namespace Tumblr.NetStandard.Conversion
             }
 
             serializer.Populate(obj.CreateReader(), post.Common);  // Won't work, as reader has been moved
-            serializer.Populate(obj.CreateReader(), post.Reblog);
+            if (isReblog)
+            {
+                serializer.Populate(obj.CreateReader(), post.Reblog);
+            }
+
             if (post.Common.NoteCount > 0)
             {
                 serializer.Populate(obj.Value<JArray>("notes").CreateReader(), post.Notes);

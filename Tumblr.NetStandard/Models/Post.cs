@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Tumblr.NetStandard.Models
 {
-    public abstract class Post
+    public abstract class Post: IAvatar
     {
         protected Post()
         {
@@ -19,6 +19,9 @@ namespace Tumblr.NetStandard.Models
 
         [JsonProperty("notes")]
         public List<Note> Notes { get; set; }
+
+        [JsonIgnore]
+        public string BlogName => Common.BlogName;
     }
 
     public abstract class Post<T>:Post where T:new()
