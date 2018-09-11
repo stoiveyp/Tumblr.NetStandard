@@ -22,7 +22,7 @@ namespace Tumblr.NetStandard
 
         public async Task<TumblrCredentials> Login()
         {
-            var authorizer = new OAuthAuthorizer(Consumer.Id, Consumer.Secret);
+            var authorizer = new OAuthAuthorizer(Consumer);
 
             // get request token
             var tokenResponse = await authorizer.GetRequestToken(RequestUrl);
@@ -34,10 +34,10 @@ namespace Tumblr.NetStandard
             {
                 return null;
             }
-            return await GetAccessToken(Consumer.Id,Consumer.Secret,tokenString, requestToken.Secret);
+            return await GetAccessToken(Consumer,tokenString, requestToken.Secret);
         }
 
-        protected async Task<TumblrCredentials> GetAccessToken(string consumerKey, string consumerSecret, string webAuthResultResponseData, string tokenSecret)
+        protected async Task<TumblrCredentials> GetAccessToken(TumblrClientCredentials clientCredentials, string webAuthResultResponseData, string tokenSecret)
         {
             string responseData = webAuthResultResponseData.Substring(webAuthResultResponseData.IndexOf("oauth_token", StringComparison.Ordinal));
             if (responseData.EndsWith("#_=_"))
@@ -61,7 +61,7 @@ namespace Tumblr.NetStandard
                 }
             }
 
-            var authorizer = new OAuthAuthorizer(consumerKey, consumerSecret);
+            var authorizer = new OAuthAuthorizer(clientCredentials);
 
             var accessToken = await authorizer.GetAccessToken(AccessTokenUrl,new RequestToken(requestToken, tokenSecret), oauthVerifier).ConfigureAwait(false);
             return new TumblrCredentials(accessToken.Token.Key, accessToken.Token.Secret);

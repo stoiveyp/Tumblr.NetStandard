@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tumblr.NetStandard", "Tumblr.NetStandard\Tumblr.NetStandard.csproj", "{686A99FB-13FE-44C0-819A-38DBE36CD4F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tumblr.NetStandard", "Tumblr.NetStandard\Tumblr.NetStandard.csproj", "{686A99FB-13FE-44C0-819A-38DBE36CD4F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tumblr.NetStandard.Tests", "Tumblr.NetStandard.Tests\Tumblr.NetStandard.Tests.csproj", "{62B265EF-10C3-4D99-98A8-F07A77A39F6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{686A99FB-13FE-44C0-819A-38DBE36CD4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{686A99FB-13FE-44C0-819A-38DBE36CD4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{686A99FB-13FE-44C0-819A-38DBE36CD4F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62B265EF-10C3-4D99-98A8-F07A77A39F6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B265EF-10C3-4D99-98A8-F07A77A39F6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B265EF-10C3-4D99-98A8-F07A77A39F6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B265EF-10C3-4D99-98A8-F07A77A39F6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

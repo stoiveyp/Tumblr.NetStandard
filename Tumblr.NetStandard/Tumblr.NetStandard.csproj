@@ -8,6 +8,8 @@
     <PackageReleaseNotes>Make post and reblog IAvatar objects</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/stoiveyp/Tumblr.NetStandard</RepositoryUrl>
     <PackageProjectUrl>https://github.com/stoiveyp/Tumblr.NetStandard</PackageProjectUrl>
+    <Version>2.0.0</Version>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
