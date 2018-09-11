@@ -9,11 +9,10 @@ namespace Tumblr.NetStandard.Models
         protected Post()
         {
             Common = new CommonPostData();
-            Reblog = new ReblogPostData();
             Notes = new List<Note>();
         }
 
-        public ReblogPostData Reblog { get; }
+        public ReblogPostData Reblog { get; internal set; }
 
         public CommonPostData Common { get; }
 

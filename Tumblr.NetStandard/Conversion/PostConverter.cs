@@ -59,7 +59,12 @@ namespace Tumblr.NetStandard.Conversion
             serializer.Populate(obj.CreateReader(), post.Common);  // Won't work, as reader has been moved
             if (isReblog)
             {
+                post.Reblog = new ReblogPostData();
                 serializer.Populate(obj.CreateReader(), post.Reblog);
+            }
+            else
+            {
+                post.Reblog = null;
             }
 
             if (post.Common.NoteCount > 0)
