@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Tumblr.NetStandard.Models
 {
-    public class ReblogPostData
+    public class ReblogPostData:IAvatar
     {
         [JsonProperty("reblogged_from_name")]
         public string RebloggedFrom { get; set; }
@@ -16,5 +16,7 @@ namespace Tumblr.NetStandard.Models
 
         [JsonProperty("reblogged_from_id")]
         public long ReblogPostId { get; set; }
+
+        [JsonIgnore] public string BlogName => RebloggedUri.Host;
     }
 }
