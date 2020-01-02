@@ -8,30 +8,19 @@ namespace Tumblr.NetStandard.Conversion
 {
     public class NoteConverter : JsonConverter
     {
-        private static NoteConverter _instance;
-        public static NoteConverter Instance => _instance ??= new NoteConverter();
+        public override bool CanWrite => false;
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            JObject obj = JObject.Load(reader);
-            string discriminator = (string)obj["type"];
+            var obj = JObject.Load(reader);
+            var discriminator = obj.Value<string>("type");
 
-            Note note = GenerateNote(discriminator);
-
-            switch (note)
-            {
-                case AnswerNote a:
-                    serializer.Populate(obj.CreateReader(), a.Extra);
-                    break;
-                case ReplyNote re:
-                    serializer.Populate(obj.CreateReader(), re.Extra);
-                    break;
-                case ReblogNote rb:
-                    serializer.Populate(obj.CreateReader(), rb.Extra);
-                    break;
-            }
-
-            serializer.Populate(obj.CreateReader(), note.Common);
+            var note = GenerateNote(discriminator);
+            serializer.Populate(obj.CreateReader(), note);
 
             return note;
         }

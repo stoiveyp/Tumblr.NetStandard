@@ -3,9 +3,26 @@ using Newtonsoft.Json;
 
 namespace Tumblr.NetStandard.Models.PostRead
 {
-    public class AudioPost:Post<AudioData>
+    public class AudioPost : Post
     {
+        [JsonProperty("album_art")]
+        public Uri AlbumArt { get; set; }
+
+        [JsonProperty("caption")]
+        public string Caption { get; set; }
+
+        [JsonProperty("audio_url")]
+        public Uri AudioUrl { get; set; }
+
+        [JsonProperty("permalink_url")]
+        public Uri Permalink { get; set; }
+
+        [JsonProperty("source_url")]
+        public Uri SourceUrl { get; set; }
+
+        [JsonProperty("html5_enabled")]
+        public bool IsHtml5 { get; set; }
         [JsonIgnore]
-        public Uri PreferredUrl => Data.AudioUrl ?? Data.Permalink ?? Data.SourceUrl ?? Common.PostLink;
+        public Uri PreferredUrl => AudioUrl ?? Permalink ?? SourceUrl ?? PostLink;
     }
 }
