@@ -2,7 +2,7 @@
 
 namespace Tumblr.NetStandard.Models
 {
-    public class ApiResponse<T>
+    public class ApiResponse<T> where T:ResponseData
     {
         [JsonIgnore]
         public bool Success { get; set; } = true;
