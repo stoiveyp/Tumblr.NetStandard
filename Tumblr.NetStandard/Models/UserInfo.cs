@@ -17,7 +17,7 @@ namespace Tumblr.NetStandard.Models
         [JsonProperty("likes")]
         public int Likes { get; set; }
 
-        [JsonProperty("blogs")]
-        public List<UserBlogInfo> Blogs { get; set; }
+        [JsonProperty("blogs",NullValueHandling = NullValueHandling.Ignore)]
+        public UserBlogInfo[] Blogs { get; set; }
     }
 }

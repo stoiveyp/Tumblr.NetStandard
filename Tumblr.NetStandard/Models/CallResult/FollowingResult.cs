@@ -8,7 +8,7 @@ namespace Tumblr.NetStandard.Models.CallResult
         [JsonProperty("total_blogs")]
         public int TotalFollowing { get; set; }
 
-        [JsonProperty("blogs")]
-        public List<Follower> Following { get; set; }
+        [JsonProperty("blogs", NullValueHandling = NullValueHandling.Ignore)]
+        public Follower[] Following { get; set; }
     }
 }
