@@ -38,35 +38,21 @@ namespace Tumblr.NetStandard.Conversion
 
         private Note GenerateNote(string discriminator)
         {
-            switch (discriminator)
+            return discriminator switch
             {
-                case "like":
-                    return new LikeNote();
-                case "answer":
-                    return new AnswerNote();
-                case "posted":
-                    return new PostedNote();
-                case "note_model":
-                case "comment":
-                case "reply":
-                    return new ReplyNote();
-                case "reblog":
-                    return new ReblogNote();
-                default:
-                    return new Note();
-            }
+                "like" => new LikeNote(),
+                "answer" => new AnswerNote(),
+                "note_model" => new ReplyNote(),
+                "comment" => new ReplyNote(),
+                "reply" => new ReplyNote(),
+                "reblog" => new ReblogNote(),
+                _ => new Note()
+            };
         }
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType.FullName.EndsWith("Note");
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            var so = JsonConvert.SerializeObject(value);
-            writer.WriteRaw(so);
-            writer.WriteRaw(",");
+            return objectType == typeof(Note) || objectType.IsSubclassOf(typeof(Note));
         }
     }
 }

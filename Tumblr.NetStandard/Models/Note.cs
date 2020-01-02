@@ -1,26 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.Models
 {
     [JsonConverter(typeof(NoteConverter))]
-    public class Note<T> : Note where T:new()
-    {
-        public Note()
-        {
-            Extra = new T();
-        }
-
-        public T Extra { get; set; }
-    }
-
     public class Note
     {
-        public Note()
-        {
-            Common = new CommonNoteData();
-        }
+        [JsonProperty("blog_name")]
+        public string Name { get; set; }
 
-        public CommonNoteData Common { get; set; }
+        [JsonProperty("blog_url")]
+        public Uri Url { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("timestamp"), JsonConverter(typeof(EpochDateTimeHandler))]
+        public DateTime Timestamp { get; set; }
     }
 }
