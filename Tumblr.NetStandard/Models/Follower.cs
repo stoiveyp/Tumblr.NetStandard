@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Newtonsoft.Json;
+using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.Models
 {
@@ -15,11 +16,13 @@ namespace Tumblr.NetStandard.Models
         [JsonProperty("url")]
         public Uri Url { get; set; }
 
-        [JsonProperty("updated")]
+        [JsonProperty("updated"), JsonConverter(typeof(EpochDateTimeHandler))]
         public DateTime LastUpdated { get; set; }
 
+        [JsonIgnore]
         public Uri SmallPicture => this.GetAvatar(AvatarSize.Small);
 
+        [JsonIgnore]
         public string BlogName => Url.Host;
     }
 }

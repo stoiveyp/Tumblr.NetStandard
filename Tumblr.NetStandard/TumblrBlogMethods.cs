@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Tumblr.NetStandard.Models;
 using Tumblr.NetStandard.Models.CallResult;
 
@@ -25,8 +26,8 @@ namespace Tumblr.NetStandard
         {
             var posts = ClientDetail.StandardPostDictionary;
 
-            posts.Add("offset", offset.ToString());
-            posts.Add("limit",pageSize.ToString());
+            posts.Add(nameof(offset), offset.ToString());
+            posts.Add("limit", pageSize.ToString());
 
             var uri = ClientDetail.CreateUri(ApiPath(BlogName, BlogApiPart.Posts), posts);
             return ClientDetail.MakeGetRequest<BlogPostResult>(uri);
@@ -39,13 +40,12 @@ namespace Tumblr.NetStandard
 
         private string TranslatePart(BlogApiPart part)
         {
-            switch (part)
+            return part switch
             {
-                case BlogApiPart.Posts:
-                    return "posts";
-                default:
-                    return "info";
-            }
+                BlogApiPart.Posts => "posts",
+                BlogApiPart.Avatar => "avatar",
+                _ => "info"
+            };
         }
     }
 }

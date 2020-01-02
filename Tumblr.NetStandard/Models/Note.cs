@@ -1,5 +1,9 @@
-﻿namespace Tumblr.NetStandard.Models
+﻿using Newtonsoft.Json;
+using Tumblr.NetStandard.Conversion;
+
+namespace Tumblr.NetStandard.Models
 {
+    [JsonConverter(typeof(NoteConverter))]
     public class Note<T> : Note where T:new()
     {
         public Note()

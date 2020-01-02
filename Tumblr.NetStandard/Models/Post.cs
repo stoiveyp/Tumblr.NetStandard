@@ -1,9 +1,11 @@
 ﻿
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.Models
 {
+    [JsonConverter(typeof(PostConverter))]
     public abstract class Post: IAvatar
     {
         protected Post()

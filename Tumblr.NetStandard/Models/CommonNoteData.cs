@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.Models
 {
@@ -14,7 +15,7 @@ namespace Tumblr.NetStandard.Models
         [JsonProperty("type")]
         public string Type { get; set; }
 
-        [JsonProperty("timestamp")]
+        [JsonProperty("timestamp"), JsonConverter(typeof(EpochDateTimeHandler))]
         public DateTime Timestamp { get; set; }
     }
 }

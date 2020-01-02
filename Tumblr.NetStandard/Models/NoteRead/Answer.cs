@@ -6,8 +6,5 @@ namespace Tumblr.NetStandard.Models.NoteRead
     {
         [JsonProperty("answer_text")]
         public string Text { get; set; }
-
-        [JsonIgnore]
-        public string ReplyText => "answered: " + Text;
     }
 }

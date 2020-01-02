@@ -9,7 +9,7 @@ namespace Tumblr.NetStandard.Conversion
     public class PostConverter : JsonConverter
     {
         private static PostConverter _instance;
-        public static PostConverter Instance => _instance ?? (_instance = new PostConverter());
+        public static PostConverter Instance => _instance ??= new PostConverter();
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {

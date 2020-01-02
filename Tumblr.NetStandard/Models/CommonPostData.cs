@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.Models
 {
@@ -9,7 +10,7 @@ namespace Tumblr.NetStandard.Models
         [JsonProperty("id")]
         public long Id { get; set; }
 
-        [JsonProperty("date")]
+        [JsonProperty("date"), JsonConverter(typeof(EpochDateTimeHandler))]
         public DateTime Date { get; set; }
 
         [JsonProperty("timestamp")]

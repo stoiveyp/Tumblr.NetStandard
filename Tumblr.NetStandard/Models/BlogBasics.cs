@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.Models
 {
@@ -23,7 +24,7 @@ namespace Tumblr.NetStandard.Models
         [JsonProperty("ask_anon")]
         public bool IsAnonymousAskEnabled { get; set; }
 
-        [JsonProperty("updated")]
+        [JsonProperty("updated"),JsonConverter(typeof(EpochDateTimeHandler))]
         public DateTime Updated { get; set; }
 
         [JsonProperty("is_nsfw")]

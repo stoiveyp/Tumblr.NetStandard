@@ -25,8 +25,7 @@ namespace Tumblr.NetStandard
 
         public readonly JsonSerializer Serializer = JsonSerializer.Create(new JsonSerializerSettings
         {
-            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-            Converters = { new EpochDateTimeHandler(), new PostConverter(), new NoteConverter() }
+            DateTimeZoneHandling = DateTimeZoneHandling.Utc
         });
 
         public ApiResponse<T> HandleNotLoggedIn<T>()
