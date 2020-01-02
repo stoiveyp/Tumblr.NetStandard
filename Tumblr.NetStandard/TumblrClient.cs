@@ -73,7 +73,7 @@ namespace Tumblr.NetStandard
 
         public ITumblrPostMethods ForPost(Post post)
         {
-            return ForPost(post.Common.Id, post.Common.ReblogKey);
+            return ForPost(post.Id, post.ReblogKey);
         }
 
         private void HandleError(string message)

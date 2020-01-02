@@ -2,7 +2,7 @@
 
 namespace Tumblr.NetStandard.Models.PostRead
 {
-    public class LinkPost
+    public class LinkPost:Post
     {
         [JsonProperty("url")]
         public string Url { get; set; }
