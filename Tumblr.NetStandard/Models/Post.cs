@@ -34,7 +34,7 @@ namespace Tumblr.NetStandard.Models
         public bool Liked { get; set; }
 
         [JsonProperty("tags")]
-        public Tag[] Tags { get; set; }
+        public string[] Tags { get; set; }
 
         [JsonProperty("post_url")]
         public Uri PostLink { get; set; }
