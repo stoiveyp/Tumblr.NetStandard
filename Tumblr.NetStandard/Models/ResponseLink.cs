@@ -6,7 +6,7 @@ namespace Tumblr.NetStandard.Models
 {
     public class ResponseLink
     {
-        [JsonProperty("type")]
+        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }
 
         [JsonProperty("href",NullValueHandling = NullValueHandling.Ignore)]

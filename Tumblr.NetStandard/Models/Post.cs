@@ -7,22 +7,22 @@ using Tumblr.NetStandard.Conversion;
 namespace Tumblr.NetStandard.Models
 {
     [JsonConverter(typeof(PostConverter))]
-    public class Post: IAvatar
+    public class Post
     {
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public ulong Id { get; set; }
 
-        [JsonProperty("date"), JsonConverter(typeof(EpochDateTimeHandler))]
+        [JsonProperty("blog")]
+        public ShortBlogInfo Blog { get; set; }
+
+        [JsonProperty("date")]
         public DateTime Date { get; set; }
 
-        [JsonProperty("timestamp")]
-        public DateTime Timestamp => Date;
+        [JsonProperty("timestamp"), JsonConverter(typeof(EpochDateTimeHandler))]
+        public DateTime Timestamp { get; set; }
 
         [JsonProperty("reblog_key")]
         public string ReblogKey { get; set; }
-
-        [JsonProperty("blog_name")]
-        public string Name { get; set; }
 
         [JsonProperty("note_count")]
         public int NoteCount { get; set; }
@@ -39,11 +39,8 @@ namespace Tumblr.NetStandard.Models
         [JsonProperty("post_url")]
         public Uri PostLink { get; set; }
 
-        [JsonProperty("slug")]
-        public string Slug { get; set; }
-
-        [JsonIgnore]
-        public string SafeSlug => Slug.Replace('-', ' ');
+        [JsonProperty("short_url")]
+        public Uri ShortUrl { get; set; }
 
         [JsonProperty("state")]
         public string State { get; set; }
@@ -53,16 +50,10 @@ namespace Tumblr.NetStandard.Models
         [JsonProperty("notes")]
         public Note[] Notes { get; set; }
 
-        [JsonProperty("reblogged_from_name", NullValueHandling = NullValueHandling.Ignore)]
-        public string RebloggedFrom { get; set; }
+        [JsonProperty("display_avatar")]
+        public bool DisplayAvatar { get; set; }
 
-        [JsonProperty("reblogged_from_url", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri RebloggedUri { get; set; }
-
-        [JsonProperty("reblogged_from_following", NullValueHandling = NullValueHandling.Ignore)]
-        public bool ReblogFollowing { get; set; }
-
-        [JsonProperty("reblogged_from_id", NullValueHandling = NullValueHandling.Ignore)]
-        public long ReblogPostId { get; set; }
+        [JsonExtensionData]
+        public Dictionary<string,object> Other { get; set; }
     }
 }

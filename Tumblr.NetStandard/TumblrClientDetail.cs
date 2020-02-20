@@ -51,6 +51,8 @@ namespace Tumblr.NetStandard
                 queryValues.Add("api_key", ClientCreds.Id);
             }
 
+            queryValues.Add("npf","true");
+
             var iterate = queryValues.Select(kvp => $"{System.Net.WebUtility.UrlEncode(kvp.Key)}={System.Net.WebUtility.UrlEncode(kvp.Value)}");
             return string.Join("&", iterate.ToArray());
         }

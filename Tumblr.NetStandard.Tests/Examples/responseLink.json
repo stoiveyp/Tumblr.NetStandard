@@ -1,0 +1,13 @@
+{
+  "next": {
+    "href": "/v2/blog/engineering.tumblr.com/posts?notes_info=true&reblog_info=true&offset=20&limit=20&page_number=2",
+    "method": "GET",
+    "query_params": {
+      "notes_info": "true",
+      "reblog_info": "true",
+      "offset": "20",
+      "limit": "20",
+      "page_number": "2"
+    }
+  }
+}

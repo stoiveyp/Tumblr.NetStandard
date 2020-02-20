@@ -45,6 +45,7 @@ namespace Tumblr.NetStandard.Conversion
                 "audio" => new AudioPost(),
                 "video" => new VideoPost(),
                 "answer" => new AnswerPost(),
+                "blocks" => new BlocksPost(),
                 _ => new Post()
 
             };
