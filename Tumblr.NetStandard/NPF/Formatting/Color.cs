@@ -7,7 +7,7 @@ namespace Tumblr.NetStandard.NPF.Formatting
         public const string FormattingType = "color";
 
         [JsonProperty("type")]
-        public string Type => FormattingType;
+        public override string Type => FormattingType;
 
         [JsonProperty("hex")]
         public string Hex { get; set; }

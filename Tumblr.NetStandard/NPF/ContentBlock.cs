@@ -9,6 +9,7 @@ namespace Tumblr.NetStandard.NPF
         [JsonProperty("type")]
         public abstract string Type { get; }
 
-        //TODO:Attribution
+        [JsonProperty("attribution", NullValueHandling = NullValueHandling.Ignore)]
+        public Attribution Attribution { get; set; }
     }
 }

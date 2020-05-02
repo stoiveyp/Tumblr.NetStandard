@@ -6,8 +6,11 @@ using Tumblr.NetStandard.Conversion;
 namespace Tumblr.NetStandard.Api
 {
     [JsonConverter(typeof(PostConverter))]
-    public class Post
+    public abstract class Post
     {
+        [JsonProperty("type")]
+        public abstract string Type { get; }
+
         [JsonProperty("id")]
         public ulong Id { get; set; }
 
@@ -25,9 +28,6 @@ namespace Tumblr.NetStandard.Api
 
         [JsonProperty("note_count", NullValueHandling = NullValueHandling.Ignore)]
         public int NoteCount { get; set; }
-
-        [JsonProperty("type")]
-        public string Type { get; set; }
 
         [JsonProperty("liked", NullValueHandling = NullValueHandling.Ignore)]
         public bool? Liked { get; set; }

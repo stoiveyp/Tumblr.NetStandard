@@ -7,7 +7,7 @@ namespace Tumblr.NetStandard.NPF.Formatting
         public const string FormattingType = "link";
 
         [JsonProperty("type")]
-        public string Type => FormattingType;
+        public override string Type => FormattingType;
 
         [JsonProperty("url")]
         public string Url { get; set; }

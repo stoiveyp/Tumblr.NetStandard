@@ -8,7 +8,7 @@ namespace Tumblr.NetStandard.NPF.Formatting
         public const string FormattingType = "mention";
 
         [JsonProperty("type")]
-        public string Type => FormattingType;
+        public override string Type => FormattingType;
 
         [JsonProperty("blog")]
         public BlogIdentifier Blog { get; set; }

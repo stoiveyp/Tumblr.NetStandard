@@ -5,6 +5,9 @@ namespace Tumblr.NetStandard.Posts
 {
     public class AnswerPost:Post
     {
+        public const string PostType = "answer";
+        [JsonProperty("type")] public override string Type => PostType;
+
         [JsonProperty("asking_name")]
         public string AskingName { get; set; }
 

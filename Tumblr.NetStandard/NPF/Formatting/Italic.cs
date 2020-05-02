@@ -7,6 +7,6 @@ namespace Tumblr.NetStandard.NPF.Formatting
         public const string FormattingType = "italic";
 
         [JsonProperty("type")]
-        public string Type => FormattingType;
+        public override string Type => FormattingType;
     }
 }

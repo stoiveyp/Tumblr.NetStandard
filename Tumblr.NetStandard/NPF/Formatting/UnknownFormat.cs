@@ -1,4 +1,6 @@
-﻿namespace Tumblr.NetStandard.NPF.Formatting
+﻿using Newtonsoft.Json;
+
+namespace Tumblr.NetStandard.NPF.Formatting
 {
     public class UnknownFormat : Format
     {
@@ -6,5 +8,8 @@
         {
             Type = type;
         }
+
+        [JsonProperty("type")]
+        public override string Type { get; }
     }
 }

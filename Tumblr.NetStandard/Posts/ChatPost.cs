@@ -5,6 +5,9 @@ namespace Tumblr.NetStandard.Posts
 {
     public class ChatPost:Post
     {
+        public const string PostType = "chat";
+        [JsonProperty("type")] public override string Type => PostType;
+
         [JsonProperty("title")]
         public string Title { get; set; }
 

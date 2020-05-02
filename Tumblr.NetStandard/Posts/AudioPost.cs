@@ -6,6 +6,9 @@ namespace Tumblr.NetStandard.Posts
 {
     public class AudioPost : Post
     {
+        public const string PostType = "audio";
+        [JsonProperty("type")] public override string Type => PostType;
+
         [JsonProperty("album_art")]
         public Uri AlbumArt { get; set; }
 

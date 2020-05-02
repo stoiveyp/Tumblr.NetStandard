@@ -5,6 +5,9 @@ namespace Tumblr.NetStandard.Posts
 {
     public class LinkPost:Post
     {
+        public const string PostType = "link";
+        [JsonProperty("type")] public override string Type => PostType;
+
         [JsonProperty("url")]
         public string Url { get; set; }
 

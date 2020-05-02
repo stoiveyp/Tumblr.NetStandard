@@ -33,20 +33,20 @@ namespace Tumblr.NetStandard.Conversion
             return post;
         }
 
-        private Post CreatePost(string discriminator)
+        private Post CreatePost(string type)
         {
-            return discriminator switch
+            return type switch
             {
-                "text" => new TextPost(),
-                "photo" => new PhotoPost(),
-                "quote" => new QuotePost(),
-                "link" => new LinkPost(),
-                "chat" => new ChatPost(),
-                "audio" => new AudioPost(),
-                "video" => new VideoPost(),
-                "answer" => new AnswerPost(),
-                "blocks" => new BlocksPost(),
-                _ => new Post()
+                TextPost.PostType => new TextPost(),
+                PhotoPost.PostType => new PhotoPost(),
+                QuotePost.PostType => new QuotePost(),
+                LinkPost.PostType => new LinkPost(),
+                ChatPost.PostType => new ChatPost(),
+                AudioPost.PostType => new AudioPost(),
+                VideoPost.PostType => new VideoPost(),
+                AnswerPost.PostType => new AnswerPost(),
+                BlocksPost.PostType => new BlocksPost(),
+                _ => new UnknownPost(type)
 
             };
         }

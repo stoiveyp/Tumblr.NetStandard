@@ -80,21 +80,15 @@ namespace Tumblr.NetStandard
 
         private string TranslatePart(UserApiPart part)
         {
-            switch (part)
+            return part switch
             {
-                case UserApiPart.Dashboard:
-                    return "dashboard";
-                case UserApiPart.Likes:
-                    return "likes";
-                case UserApiPart.Following:
-                    return "following";
-                case UserApiPart.Like:
-                    return "like";
-                case UserApiPart.Unlike:
-                    return "unlike";
-                default:
-                    return "info";
-            }
+                UserApiPart.Dashboard => "dashboard",
+                UserApiPart.Likes => "likes",
+                UserApiPart.Following => "following",
+                UserApiPart.Like => "like",
+                UserApiPart.Unlike => "unlike",
+                _ => "info"
+            };
         }
     }
 }

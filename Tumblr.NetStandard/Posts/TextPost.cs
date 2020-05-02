@@ -5,6 +5,9 @@ namespace Tumblr.NetStandard.Posts
 {
     public class TextPost:Post
     {
+        public const string PostType = "text";
+        [JsonProperty("type")] public override string Type => PostType;
+
         [JsonProperty("title", NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
 

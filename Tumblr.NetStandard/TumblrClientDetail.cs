@@ -17,6 +17,8 @@ namespace Tumblr.NetStandard
         public HttpClient Client { get; set; }
         public AccessToken AccessToken { get; set; }
         public bool UseApiKey { get; set; }
+
+        public bool UseNpf { get; set; } = true;
         public TumblrClientCredentials ClientCreds { get; set; }
         public Action<string> OnError { get; set; }
         public Dictionary<string, string> StandardPostDictionary => new Dictionary<string, string>
@@ -36,21 +38,26 @@ namespace Tumblr.NetStandard
 
         public Uri CreateUri(string path, Dictionary<string, string> query = null)
         {
-            var builder = new UriBuilder("https", "api.tumblr.com");
-            builder.Path = $"/v2/{path}";
-            builder.Query = CreateQueryString(query);
+            var builder = new UriBuilder("https", "api.tumblr.com")
+            {
+                Path = $"/v2/{path}", 
+                Query = CreateQueryString(query)
+            };
             return builder.Uri;
         }
 
         private string CreateQueryString(Dictionary<string, string> queryValues)
         {
-            queryValues = queryValues ?? new Dictionary<string, string>();
+            queryValues ??= new Dictionary<string, string>();
             if (UseApiKey)
             {
                 queryValues.Add("api_key", ClientCreds.Id);
             }
 
-            //queryValues.Add("npf","true");
+            if (UseNpf)
+            {
+                queryValues.Add("npf",true.ToString().ToLower());
+            }
 
             var iterate = queryValues.Select(kvp => $"{System.Net.WebUtility.UrlEncode(kvp.Key)}={System.Net.WebUtility.UrlEncode(kvp.Value)}");
             return string.Join("&", iterate.ToArray());
@@ -92,16 +99,16 @@ namespace Tumblr.NetStandard
             try
             {
                 var stream = await getStream(Client, uri).ConfigureAwait(false);
-                using (var reader = new JsonTextReader(new StreamReader(stream, Encoding.UTF8)))
+
+                using var reader = new JsonTextReader(new StreamReader(stream, Encoding.UTF8));
+                var result = Serializer.Deserialize<ApiResponse<T>>(reader);
+
+                if (result.Meta.Code != acceptableCode)
                 {
-                    var result = Serializer.Deserialize<ApiResponse<T>>(reader);
-                    if (result.Meta.Code != acceptableCode)
-                    {
-                        result.Success = false;
-                        OnError?.Invoke(result.Meta.Message);
-                    }
-                    return result;
+                    result.Success = false;
+                    OnError?.Invoke(result.Meta.Message);
                 }
+                return result;
             }
             catch (HttpRequestException)
             {

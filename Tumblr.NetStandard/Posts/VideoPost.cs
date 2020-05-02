@@ -6,6 +6,9 @@ namespace Tumblr.NetStandard.Posts
 {
     public class VideoPost : Post
     {
+        public const string PostType = "video";
+        [JsonProperty("type")] public override string Type => PostType;
+
         [JsonProperty("caption")]
         public string Caption { get; set; }
 

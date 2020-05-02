@@ -8,7 +8,7 @@ namespace Tumblr.NetStandard.NPF
     public class Format
     {
         [JsonProperty("type")]
-        public string Type { get; }
+        public virtual string Type { get; }
 
         [JsonProperty("start")]
         public int Start { get; set; }
