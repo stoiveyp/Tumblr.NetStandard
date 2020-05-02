@@ -7,8 +7,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Tumblr.NetStandard.Api;
 using Tumblr.NetStandard.Conversion;
-using Tumblr.NetStandard.Models;
 using Tumblr.NetStandard.OAuth;
 
 namespace Tumblr.NetStandard
@@ -51,7 +51,7 @@ namespace Tumblr.NetStandard
                 queryValues.Add("api_key", ClientCreds.Id);
             }
 
-            queryValues.Add("npf","true");
+            //queryValues.Add("npf","true");
 
             var iterate = queryValues.Select(kvp => $"{System.Net.WebUtility.UrlEncode(kvp.Key)}={System.Net.WebUtility.UrlEncode(kvp.Value)}");
             return string.Join("&", iterate.ToArray());

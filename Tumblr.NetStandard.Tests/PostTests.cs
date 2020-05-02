@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Tumblr.NetStandard.Models;
-using Tumblr.NetStandard.Models.CallResult;
+using Tumblr.NetStandard.Api;
 using Xunit;
 
 namespace Tumblr.NetStandard.Tests
@@ -39,18 +38,58 @@ namespace Tumblr.NetStandard.Tests
                     throw new InvalidOperationException("Bad counts");
                 }
 
-                var count = actualArray.Zip(expectedArray,(a,e) =>
-                {
-                    var result = JToken.DeepEquals(a,e);
-                    if (!result)
-                    {
-                        Console.WriteLine(a.Value<string>("type"));
-                    }
-
-                    return result;
-                }).Count(b => !b);
-                Assert.Equal(0,count);
+                var count = actualArray.Cast<JObject>().Zip(expectedArray.Cast<JObject>(), CheckObjectArray).Count(b => b);
+                Assert.Equal(20, count);
             }
+        }
+
+        private bool CheckObjectArray(JObject aj, JObject ej)
+        {
+            if (aj.ContainsKey("date"))
+            {
+                aj.Remove("date");
+            }
+
+            if (ej.ContainsKey("date"))
+            {
+                ej.Remove("date");
+            }
+
+            if (JToken.DeepEquals(aj, ej))
+            {
+                return true;
+            }
+
+            if (aj.Properties().Count() != ej.Properties().Count())
+            {
+                var ajWins = aj.Properties().Count() > ej.Properties().Count();
+                var max = ajWins ? aj : ej;
+                var min = ajWins ? ej : aj;
+                var leftovers = max.Properties().Select(p => p.Name).Except(min.Properties().Select(p => p.Name)).ToArray();
+                throw new InvalidOperationException($"Bad Properties: {string.Join(",",leftovers)}");
+            }
+
+            if (aj.ContainsKey("notes"))
+            {
+                    var _ = aj.Value<JArray>("notes").Cast<JObject>().ToArray().Zip(
+                    ej.Value<JArray>("notes").Cast<JObject>().ToArray(),CheckObjectArray).ToArray();
+            }
+
+            foreach (var pair in aj.Properties().OrderBy(p => p.Name).ToArray().Zip(ej.Properties().OrderBy(p=> p.Name).ToArray(), (ac, ex) => (ac, ex)))
+            {
+                if (JToken.DeepEquals(pair.ac, pair.ex))
+                {
+                    pair.ac.Remove();
+                    pair.ex.Remove();
+                }
+                else
+                {
+                    Console.WriteLine(pair.ac.Name);
+                    Console.WriteLine(pair.ac.Value);
+                }
+            }
+
+            return !aj.Properties().Any();
         }
     }
 }

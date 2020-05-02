@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Tumblr.NetStandard.Models.ContentBlocks;
+using Tumblr.NetStandard.NPF.ContentBlocks;
 
 namespace Tumblr.NetStandard.Conversion
 {

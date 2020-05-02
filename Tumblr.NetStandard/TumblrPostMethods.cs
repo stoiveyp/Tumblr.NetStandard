@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Tumblr.NetStandard.Models;
+using Tumblr.NetStandard.Api;
 
 namespace Tumblr.NetStandard
 {
     public class TumblrPostMethods:ITumblrPostMethods
     {
-        private long PostId { get; }
+        private ulong PostId { get; }
         private string ReblogKey { get; }
         private TumblrClientDetail ClientDetail { get; }
 
-        public TumblrPostMethods(long postId, string reblogKey, TumblrClientDetail clientDetail)
+        public TumblrPostMethods(ulong postId, string reblogKey, TumblrClientDetail clientDetail)
         {
             PostId = postId;
             ReblogKey = reblogKey;

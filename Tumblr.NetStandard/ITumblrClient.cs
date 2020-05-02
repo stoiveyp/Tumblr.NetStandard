@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Tumblr.NetStandard.Models;
-using Tumblr.NetStandard.Models.CallResult;
+using Tumblr.NetStandard.Api;
 
 namespace Tumblr.NetStandard
 {
@@ -15,7 +14,7 @@ namespace Tumblr.NetStandard
 
         ITumblrPostMethods ForPost(Post post);
 
-        ITumblrPostMethods ForPost(long id, string reblogKey);
+        ITumblrPostMethods ForPost(ulong id, string reblogKey);
 
         Task<ApiResponse<Post[]>> Tagged(string tag);
     }

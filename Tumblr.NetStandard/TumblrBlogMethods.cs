@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Tumblr.NetStandard.Models;
-using Tumblr.NetStandard.Models.CallResult;
+using Tumblr.NetStandard.Api;
 
 namespace Tumblr.NetStandard
 {

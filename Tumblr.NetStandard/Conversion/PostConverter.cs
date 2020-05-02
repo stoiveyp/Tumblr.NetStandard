@@ -1,8 +1,8 @@
 ﻿using System;
-using Tumblr.NetStandard.Models;
-using Tumblr.NetStandard.Models.PostRead;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Tumblr.NetStandard.Api;
+using Tumblr.NetStandard.Posts;
 
 namespace Tumblr.NetStandard.Conversion
 {

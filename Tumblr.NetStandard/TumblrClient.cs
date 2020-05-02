@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Tumblr.NetStandard.Models;
+using Tumblr.NetStandard.Api;
 using Tumblr.NetStandard.OAuth;
 
 namespace Tumblr.NetStandard
@@ -66,7 +66,7 @@ namespace Tumblr.NetStandard
             return new TumblrBlogMethods(blogName, ClientDetail);
         }
 
-        public ITumblrPostMethods ForPost(long id, string reblogKey)
+        public ITumblrPostMethods ForPost(ulong id, string reblogKey)
         {
             return new TumblrPostMethods(id, reblogKey, ClientDetail);
         }
