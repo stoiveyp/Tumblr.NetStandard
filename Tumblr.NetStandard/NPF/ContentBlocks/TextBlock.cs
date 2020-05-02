@@ -14,7 +14,7 @@ namespace Tumblr.NetStandard.NPF.ContentBlocks
 
         [JsonProperty("subtype",NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public TextSubtype Subtype { get; set; }
+        public TextSubtype? Subtype { get; set; }
 
         [JsonProperty("formatting", NullValueHandling = NullValueHandling.Ignore)]
         public Format[] Formatting { get; set; }

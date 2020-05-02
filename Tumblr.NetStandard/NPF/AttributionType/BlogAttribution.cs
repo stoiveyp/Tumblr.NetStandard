@@ -10,7 +10,10 @@ namespace Tumblr.NetStandard.NPF.AttributionType
         [JsonProperty("type")]
         public override string Type => AttributionType;
 
+        [JsonProperty("url",NullValueHandling = NullValueHandling.Ignore)]
+        public string Url { get; set; }
+
         [JsonProperty("blog")]
-        public BlogIdentifier Blog { get; set; }
+        public ShortBlogInfo Blog { get; set; }
     }
 }
