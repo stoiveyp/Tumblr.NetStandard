@@ -21,7 +21,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<DashboardResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Dashboard), ClientDetail.StandardPostDictionary);
+            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Dashboard), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<DashboardResult>(uri);
         }
 
@@ -32,7 +32,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<DashboardResult>());
             }
 
-            var posts = ClientDetail.StandardPostDictionary;
+            var posts = ClientDetail.StandardPostDictionary.AddNpf(ClientDetail);
             posts.Add("offset", offset.ToString());
             posts.Add("limit", limit.ToString());
 
@@ -47,7 +47,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<UserLikeResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Likes), ClientDetail.StandardPostDictionary);
+            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Likes), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<UserLikeResult>(uri);
         }
 
@@ -58,7 +58,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<FollowingResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Following), new Dictionary<string, string> { { "offset", offset.ToString() } });
+            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Following), new Dictionary<string, string> { { "offset", offset.ToString() } }.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<FollowingResult>(uri);
         }
 

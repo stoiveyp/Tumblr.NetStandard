@@ -30,7 +30,7 @@ namespace Tumblr.NetStandard
             var dictionary = new Dictionary<string, string> { { "id", PostId.ToString() }, { "reblog_key", ReblogKey } };
 
             var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Like));
-            return ClientDetail.MakeStatusPost(uri, dictionary, HttpStatusCode.OK);
+            return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
         }
 
         public Task<ApiResponse<bool>> Unlike()
@@ -43,7 +43,7 @@ namespace Tumblr.NetStandard
             var dictionary = new Dictionary<string, string> { { "id", PostId.ToString() }, { "reblog_key", ReblogKey } };
 
             var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Unlike));
-            return ClientDetail.MakeStatusPost(uri, dictionary, HttpStatusCode.OK);
+            return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
         }
 
         private string ApiPath(UserApiPart blogPart)

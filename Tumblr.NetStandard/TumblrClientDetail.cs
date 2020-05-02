@@ -46,7 +46,7 @@ namespace Tumblr.NetStandard
             return builder.Uri;
         }
 
-        private string CreateQueryString(Dictionary<string, string> queryValues)
+        private string CreateQueryString(Dictionary<string, string> queryValues, bool npfAware = false)
         {
             queryValues ??= new Dictionary<string, string>();
             if (UseApiKey)
@@ -54,7 +54,7 @@ namespace Tumblr.NetStandard
                 queryValues.Add("api_key", ClientCreds.Id);
             }
 
-            if (UseNpf)
+            if (UseNpf && npfAware)
             {
                 queryValues.Add("npf",true.ToString().ToLower());
             }
@@ -63,7 +63,24 @@ namespace Tumblr.NetStandard
             return string.Join("&", iterate.ToArray());
         }
 
-        public async Task<ApiResponse<bool>> MakeStatusPost(Uri uri, Dictionary<string, string> dictionary, HttpStatusCode acceptableCode = HttpStatusCode.Created)
+        public async Task<ApiResponse<bool>> MultipartFormRequest(Uri uri, object content, Dictionary<string,Stream> streams, HttpStatusCode acceptableCode = HttpStatusCode.Created)
+        {
+            var requestContent = new MultipartContent();
+
+            var result = await MakeStandardCall<object[]>(uri, async (c, u) =>
+            {
+                var response = await Client.PostAsync(uri, requestContent).ConfigureAwait(false);
+                return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            }, acceptableCode);
+            var newResponse = new ApiResponse<bool>
+            {
+                Meta = result.Meta,
+                Response = result.Success
+            };
+            return newResponse;
+        }
+
+        public async Task<ApiResponse<bool>> FormEncodedPostRequest(Uri uri, Dictionary<string, string> dictionary, HttpStatusCode acceptableCode = HttpStatusCode.Created)
         {
             var result = await MakeStandardCall<object[]>(uri, async (c, u) =>
             {
@@ -77,16 +94,6 @@ namespace Tumblr.NetStandard
                 Response = result.Success
             };
             return newResponse;
-        }
-
-        public Task<ApiResponse<T>> MakeStandardPost<T>(Uri uri, Dictionary<string, string> dictionary, HttpStatusCode acceptableCode = HttpStatusCode.Created)
-        {
-            return MakeStandardCall<T>(uri, async (c, u) =>
-            {
-                var content = new FormUrlEncodedContent(dictionary);
-                var response = await Client.PostAsync(uri, content);
-                return await response.Content.ReadAsStreamAsync();
-            }, acceptableCode);
         }
 
         public Task<ApiResponse<T>> MakeGetRequest<T>(Uri uri, HttpStatusCode acceptableCode = HttpStatusCode.OK)

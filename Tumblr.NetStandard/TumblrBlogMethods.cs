@@ -17,13 +17,13 @@ namespace Tumblr.NetStandard
 
         public Task<ApiResponse<BlogPostResult>> Posts()
         {
-            var uri = ClientDetail.CreateUri(ApiPath(BlogName, BlogApiPart.Posts), ClientDetail.StandardPostDictionary);
+            var uri = ClientDetail.CreateUri(ApiPath(BlogName, BlogApiPart.Posts), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<BlogPostResult>(uri);
         }
 
         public Task<ApiResponse<BlogPostResult>> Posts(int offset, int pageSize)
         {
-            var posts = ClientDetail.StandardPostDictionary;
+            var posts = ClientDetail.StandardPostDictionary.AddNpf(ClientDetail);
 
             posts.Add(nameof(offset), offset.ToString());
             posts.Add("limit", pageSize.ToString());
