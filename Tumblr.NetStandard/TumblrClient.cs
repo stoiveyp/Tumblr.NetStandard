@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Tumblr.NetStandard.Models;
+using Tumblr.NetStandard.Api;
 using Tumblr.NetStandard.OAuth;
 
 namespace Tumblr.NetStandard
@@ -12,6 +12,9 @@ namespace Tumblr.NetStandard
         private TumblrClientDetail ClientDetail { get; }
 
         public Action<string> OnError { get; set; }
+
+        private ITumblrUserMethods _user;
+        public ITumblrUserMethods User => _user ??= new TumblrUserMethods(ClientDetail);
 
         public TumblrClient(TumblrClientCredentials client) : this(null, client)
         {
@@ -58,22 +61,14 @@ namespace Tumblr.NetStandard
             ClientDetail.OnError = HandleError;
         }
 
-        private ITumblrUserMethods _user;
-        public ITumblrUserMethods User => _user ?? (_user = new TumblrUserMethods(ClientDetail));
-
         public ITumblrBlogMethods ForBlog(string blogName)
         {
             return new TumblrBlogMethods(blogName, ClientDetail);
         }
 
-        public ITumblrPostMethods ForPost(long id, string reblogKey)
-        {
-            return new TumblrPostMethods(id, reblogKey, ClientDetail);
-        }
-
         public ITumblrPostMethods ForPost(Post post)
         {
-            return ForPost(post.Common.Id, post.Common.ReblogKey);
+            return ForPost(post);
         }
 
         private void HandleError(string message)
@@ -83,8 +78,13 @@ namespace Tumblr.NetStandard
 
         public Task<ApiResponse<Post[]>> Tagged(string tag)
         {
-            var uri = ClientDetail.CreateUri("tagged", new Dictionary<string, string> { { "tag", tag } });
+            var uri = ClientDetail.CreateUri("tagged", new Dictionary<string, string> { { "tag", tag } }.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<Post[]>(uri);
+        }
+
+        public bool ReturnNpfPostLists {
+            get => ClientDetail.UseNpf;
+            set => ClientDetail.UseNpf = value;
         }
     }
 }

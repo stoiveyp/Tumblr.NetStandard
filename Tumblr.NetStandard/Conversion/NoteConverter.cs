@@ -1,72 +1,47 @@
 ﻿using System;
-using Tumblr.NetStandard.Models;
-using Tumblr.NetStandard.Models.NoteRead;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Tumblr.NetStandard.Api;
+using Tumblr.NetStandard.Notes;
 
 namespace Tumblr.NetStandard.Conversion
 {
     public class NoteConverter : JsonConverter
     {
-        private static NoteConverter _instance;
-        public static NoteConverter Instance => _instance ?? (_instance = new NoteConverter());
+        public override bool CanWrite => false;
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            JObject obj = JObject.Load(reader);
-            string discriminator = (string)obj["type"];
+            var obj = JObject.Load(reader);
+            var discriminator = obj.Value<string>("type");
 
-            Note note = GenerateNote(discriminator);
-
-            switch (note)
-            {
-                case AnswerNote a:
-                    serializer.Populate(obj.CreateReader(), a.Extra);
-                    break;
-                case ReplyNote re:
-                    serializer.Populate(obj.CreateReader(), re.Extra);
-                    break;
-                case ReblogNote rb:
-                    serializer.Populate(obj.CreateReader(), rb.Extra);
-                    break;
-            }
-
-            serializer.Populate(obj.CreateReader(), note.Common);
+            var note = GenerateNote(discriminator);
+            serializer.Populate(obj.CreateReader(), note);
 
             return note;
         }
 
         private Note GenerateNote(string discriminator)
         {
-            switch (discriminator)
+            return discriminator switch
             {
-                case "like":
-                    return new LikeNote();
-                case "answer":
-                    return new AnswerNote();
-                case "posted":
-                    return new PostedNote();
-                case "note_model":
-                case "comment":
-                case "reply":
-                    return new ReplyNote();
-                case "reblog":
-                    return new ReblogNote();
-                default:
-                    return new Note();
-            }
+                "like" => new LikeNote(),
+                "answer" => new AnswerNote(),
+                "note_model" => new ReplyNote(),
+                "comment" => new ReplyNote(),
+                "reply" => new ReplyNote(),
+                "reblog" => new ReblogNote(),
+                _ => new Note()
+            };
         }
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType.FullName.EndsWith("Note");
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            var so = JsonConvert.SerializeObject(value);
-            writer.WriteRaw(so);
-            writer.WriteRaw(",");
+            return objectType == typeof(Note) || objectType.IsSubclassOf(typeof(Note));
         }
     }
 }

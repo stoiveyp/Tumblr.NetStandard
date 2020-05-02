@@ -16,4 +16,16 @@
     <ProjectReference Include="..\Tumblr.NetStandard\Tumblr.NetStandard.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Examples\BlogPostResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\BlogPostResponse_Legacy.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\responseLink.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

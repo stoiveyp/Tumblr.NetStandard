@@ -3,20 +3,17 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Tumblr.NetStandard.Models;
+using Tumblr.NetStandard.Api;
 
 namespace Tumblr.NetStandard
 {
     public class TumblrPostMethods:ITumblrPostMethods
     {
-        private long PostId { get; }
-        private string ReblogKey { get; }
+        private Post Post { get; }
         private TumblrClientDetail ClientDetail { get; }
 
-        public TumblrPostMethods(long postId, string reblogKey, TumblrClientDetail clientDetail)
+        public TumblrPostMethods(Post post, TumblrClientDetail clientDetail)
         {
-            PostId = postId;
-            ReblogKey = reblogKey;
             ClientDetail = clientDetail;
         }
 
@@ -27,10 +24,10 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<bool>());
             }
 
-            var dictionary = new Dictionary<string, string> { { "id", PostId.ToString() }, { "reblog_key", ReblogKey } };
+            var dictionary = new Dictionary<string, string> { { "id", Post.Id.ToString() }, { "reblog_key", Post.ReblogKey } };
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Like));
-            return ClientDetail.MakeStatusPost(uri, dictionary, HttpStatusCode.OK);
+            var uri = ClientDetail.CreateUri(UserApiPart.Like.ApiPath());
+            return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
         }
 
         public Task<ApiResponse<bool>> Unlike()
@@ -40,34 +37,23 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<bool>());
             }
 
-            var dictionary = new Dictionary<string, string> { { "id", PostId.ToString() }, { "reblog_key", ReblogKey } };
+            var dictionary = new Dictionary<string, string> { { "id", Post.Id.ToString() }, { "reblog_key", Post.ReblogKey } };
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Unlike));
-            return ClientDetail.MakeStatusPost(uri, dictionary, HttpStatusCode.OK);
+            var uri = ClientDetail.CreateUri(UserApiPart.Unlike.ApiPath());
+            return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
         }
 
-        private string ApiPath(UserApiPart blogPart)
+        public Task<ApiResponse<bool>> Delete()
         {
-            return $"user/{TranslatePart(blogPart)}";
-        }
-
-        private string TranslatePart(UserApiPart part)
-        {
-            switch (part)
+            if (ClientDetail.UseApiKey)
             {
-                case UserApiPart.Dashboard:
-                    return "dashboard";
-                case UserApiPart.Likes:
-                    return "likes";
-                case UserApiPart.Following:
-                    return "following";
-                case UserApiPart.Like:
-                    return "like";
-                case UserApiPart.Unlike:
-                    return "unlike";
-                default:
-                    return "info";
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<bool>());
             }
+
+            var dictionary = new Dictionary<string, string> { { "id", Post.Id.ToString() } };
+
+            var uri = ClientDetail.CreateUri(BlogApiPart.Delete.ApiPath(Post.BlogName));
+            return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
         }
     }
 }

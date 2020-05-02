@@ -14,13 +14,13 @@ namespace Tumblr.NetStandard.Tests
         [Fact]
         public void ValidClientCredsPasses()
         {
-            var client = new TumblrClient(new TumblrClientCredentials("xxx", "yyy"));
+            var _ = new TumblrClient(new TumblrClientCredentials("xxx", "yyy"));
         }
 
         [Fact]
         public void ValidClientWithLogin()
         {
-            var client = new TumblrClient(new TumblrClientCredentials("xxx", "yyy"),
+            var _ = new TumblrClient(new TumblrClientCredentials("xxx", "yyy"),
                 new TumblrCredentials("testkey", "testsecret"));
         }
 

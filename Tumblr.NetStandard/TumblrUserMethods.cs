@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tumblr.NetStandard.Models;
-using Tumblr.NetStandard.Models.CallResult;
+using Tumblr.NetStandard.Api;
 
 namespace Tumblr.NetStandard
 {
@@ -15,30 +14,30 @@ namespace Tumblr.NetStandard
             ClientDetail = detail;
         }
 
-        public Task<ApiResponse<DashboardResult>> Dashboard()
+        public Task<ApiResponse<PostsResult>> Dashboard()
         {
             if (ClientDetail.UseApiKey)
             {
-                return Task.FromResult(ClientDetail.HandleNotLoggedIn<DashboardResult>());
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<PostsResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Dashboard), ClientDetail.StandardPostDictionary);
-            return ClientDetail.MakeGetRequest<DashboardResult>(uri);
+            var uri = ClientDetail.CreateUri(UserApiPart.Dashboard.ApiPath(), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
+            return ClientDetail.MakeGetRequest<PostsResult>(uri);
         }
 
-        public Task<ApiResponse<DashboardResult>> Dashboard(int offset, int limit)
+        public Task<ApiResponse<PostsResult>> Dashboard(int offset, int limit)
         {
             if (ClientDetail.UseApiKey)
             {
-                return Task.FromResult(ClientDetail.HandleNotLoggedIn<DashboardResult>());
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<PostsResult>());
             }
 
-            var posts = ClientDetail.StandardPostDictionary;
+            var posts = ClientDetail.StandardPostDictionary.AddNpf(ClientDetail);
             posts.Add("offset", offset.ToString());
             posts.Add("limit", limit.ToString());
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Dashboard), posts);
-            return ClientDetail.MakeGetRequest<DashboardResult>(uri);
+            var uri = ClientDetail.CreateUri(UserApiPart.Dashboard.ApiPath(), posts);
+            return ClientDetail.MakeGetRequest<PostsResult>(uri);
         }
 
         public Task<ApiResponse<UserLikeResult>> Likes()
@@ -48,7 +47,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<UserLikeResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Likes), ClientDetail.StandardPostDictionary);
+            var uri = ClientDetail.CreateUri(UserApiPart.Likes.ApiPath(), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<UserLikeResult>(uri);
         }
 
@@ -59,7 +58,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<FollowingResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Following), new Dictionary<string, string> { { "offset", offset.ToString() } });
+            var uri = ClientDetail.CreateUri(UserApiPart.Following.ApiPath(), new Dictionary<string, string> { { "offset", offset.ToString() } }.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<FollowingResult>(uri);
         }
 
@@ -70,32 +69,8 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<UserInfoResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Info));
+            var uri = ClientDetail.CreateUri(UserApiPart.Info.ApiPath());
             return ClientDetail.MakeGetRequest<UserInfoResult>(uri);
-        }
-
-        private string ApiPath(UserApiPart blogPart)
-        {
-            return $"user/{TranslatePart(blogPart)}";
-        }
-
-        private string TranslatePart(UserApiPart part)
-        {
-            switch (part)
-            {
-                case UserApiPart.Dashboard:
-                    return "dashboard";
-                case UserApiPart.Likes:
-                    return "likes";
-                case UserApiPart.Following:
-                    return "following";
-                case UserApiPart.Like:
-                    return "like";
-                case UserApiPart.Unlike:
-                    return "unlike";
-                default:
-                    return "info";
-            }
         }
     }
 }
