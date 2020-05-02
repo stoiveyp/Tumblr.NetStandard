@@ -21,6 +21,8 @@ namespace Tumblr.NetStandard.Api
         [EnumMember(Value = "posts/queue")]
         Queue,
         [EnumMember(Value = "posts/draft")]
-        Draft
+        Draft,
+        [EnumMember(Value = "post/reblog")]
+        Reblog
     }
 }

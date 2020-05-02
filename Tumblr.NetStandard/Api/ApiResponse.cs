@@ -12,5 +12,8 @@ namespace Tumblr.NetStandard.Api
 
         [JsonProperty("response")]
         public T Response { get; set; }
+
+        [JsonProperty("errors",NullValueHandling = NullValueHandling.Ignore)]
+        public Error[] Errors { get; set; }
     }
 }

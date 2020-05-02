@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using Tumblr.NetStandard.OAuth.Internal;
 
@@ -13,15 +14,8 @@ namespace Tumblr.NetStandard.OAuth
 
         private static readonly Random Random = new Random();
 
-        public static HashFunction ComputeHash { private get; set; }
-
         static string GenerateSignature(string consumerSecret, Uri uri, HttpMethod method, Token token, IEnumerable<KeyValuePair<string, string>> parameters)
         {
-            if (ComputeHash == null)
-            {
-                throw new InvalidOperationException("ComputeHash is null, must initialize before call OAuthUtility.HashFunction = /* your computeHash code */ at once.");
-            }
-
             var hmacKeyBase = consumerSecret.UrlEncode() + "&" + ((token == null) ? "" : token.Secret).UrlEncode();
 
             // escaped => unescaped[]
@@ -39,7 +33,9 @@ namespace Tumblr.NetStandard.OAuth
                 "&" + uri.GetComponents(UriComponents.SchemeAndServer | UriComponents.Path, UriFormat.Unescaped).UrlEncode() +
                 "&" + stringParameter.UrlEncode();
 
-            var hash = ComputeHash(Encoding.UTF8.GetBytes(hmacKeyBase), Encoding.UTF8.GetBytes(signatureBase));
+            var sha1 = HMAC.Create("HMAC_SHA1");
+            sha1.Key = Encoding.UTF8.GetBytes(hmacKeyBase);
+            var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(signatureBase));
             return Convert.ToBase64String(hash).UrlEncode();
         }
 

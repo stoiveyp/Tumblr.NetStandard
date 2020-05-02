@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Tumblr.NetStandard.Api;
+using Tumblr.NetStandard.NPF;
 
 namespace Tumblr.NetStandard
 {
@@ -23,12 +25,12 @@ namespace Tumblr.NetStandard
 
         public Task<ApiResponse<BlogPostResult>> Posts(BlogPostRequest request = null)
         {
-            var dictionary = ToDictionary(ClientDetail.StandardPostDictionary.AddNpf(ClientDetail),request);
+            var dictionary = ToDictionary(ClientDetail.StandardPostDictionary.AddNpf(ClientDetail), request);
             if (dictionary.ContainsKey("type"))
             {
                 dictionary.Remove("type");
             }
-            var uri = ClientDetail.CreateUri(BlogApiPart.Posts.ApiPath(FullBlogName,request?.Type), dictionary);
+            var uri = ClientDetail.CreateUri(BlogApiPart.Posts.ApiPath(FullBlogName, request?.Type), dictionary);
             return ClientDetail.MakeGetRequest<BlogPostResult>(uri);
         }
 
@@ -44,7 +46,7 @@ namespace Tumblr.NetStandard
             {
                 if (!original.ContainsKey(prop.Name))
                 {
-                    original.Add(prop.Name,prop.Value<string>());
+                    original.Add(prop.Name, prop.Value<string>());
                 }
             }
 
@@ -72,7 +74,7 @@ namespace Tumblr.NetStandard
         {
             var posts = new Dictionary<string, string>
             {
-                {nameof(offset), offset.ToString()}, 
+                {nameof(offset), offset.ToString()},
                 {"limit", pageSize.ToString()}
             };
 
@@ -108,7 +110,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<bool>());
             }
 
-            var dictionary = new Dictionary<string, string> { { "url",FullBlogName } };
+            var dictionary = new Dictionary<string, string> { { "url", FullBlogName } };
 
             var uri = ClientDetail.CreateUri(UserApiPart.Follow.ApiPath());
             return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
@@ -216,9 +218,64 @@ namespace Tumblr.NetStandard
             return ClientDetail.MakeGetRequest<PostsResult>(uri);
         }
 
+        public Task<ApiResponse<GetPostResult>> Get(ulong id)
+        {
+            if (ClientDetail.UseApiKey)
+            {
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<GetPostResult>());
+            }
+
+            var uri = ClientDetail.CreateUri(BlogApiPart.Posts.ApiPath(FullBlogName) + "/" + id);
+            return ClientDetail.MakeGetRequest<GetPostResult>(uri);
+        }
+
+        public Task<ApiResponse<bool>> Reblog(Post post, string comment = null)
+        {
+            if (ClientDetail.UseApiKey)
+            {
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<bool>());
+            }
+
+            var dictionary = new Dictionary<string, string>
+            {
+                { "id", post.Id.ToString() },
+                {"reblog_key",post.ReblogKey}
+            };
+
+            if (!string.IsNullOrWhiteSpace(comment))
+            {
+                dictionary.Add("comment", comment);
+            }
+
+            var uri = ClientDetail.CreateUri(BlogApiPart.Reblog.ApiPath(FullBlogName));
+            return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.Created);
+        }
+
+        public Task<ApiResponse<PostInformation>> Create(CreatePostRequest request, Dictionary<string, Stream> mediaStreams = null)
+        {
+            if (ClientDetail.UseApiKey)
+            {
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<PostInformation>());
+            }
+
+            var uri = ClientDetail.CreateUri(BlogApiPart.Posts.ApiPath(FullBlogName));
+            return ClientDetail.MultipartFormRequest<PostInformation>(uri, request, mediaStreams);
+        }
+
+        public Task<ApiResponse<PostInformation>> Edit(ulong postId, CreatePostRequest request, Dictionary<string, Stream> mediaStreams = null)
+        {
+            if (ClientDetail.UseApiKey)
+            {
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<PostInformation>());
+            }
+
+            var uri = ClientDetail.CreateUri(BlogApiPart.Posts.ApiPath(FullBlogName, postId.ToString()));
+            return ClientDetail.MultipartFormRequest<PostInformation>(uri, request, mediaStreams, HttpStatusCode.OK);
+        }
+
         public Uri AvatarUri(int size)
         {
-            return new Uri($"https://api.tumblr.com/v2/blog/{FullBlogName}/avatar/{size}",UriKind.Absolute);
+            return new Uri($"https://api.tumblr.com/v2/blog/{FullBlogName}/avatar/{size}", UriKind.Absolute);
         }
     }
 }

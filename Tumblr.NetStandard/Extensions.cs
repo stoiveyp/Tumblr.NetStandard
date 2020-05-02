@@ -9,11 +9,11 @@ namespace Tumblr.NetStandard
 {
     public static class Extensions
     {
-        public static Dictionary<string, string> AddNpf(this Dictionary<string, string> query, TumblrClientDetail detail)
+        public static Dictionary<string, string> AddNpf(this Dictionary<string, string> query, TumblrClientDetail detail, string key = "npf")
         {
             if (detail.UseNpf)
             {
-                query.Add("npf", true.ToString().ToLower());
+                query.Add(key, true.ToString().ToLower());
             }
             return query;
         }

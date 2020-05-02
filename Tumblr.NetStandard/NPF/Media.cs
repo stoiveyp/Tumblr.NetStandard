@@ -7,7 +7,10 @@ namespace Tumblr.NetStandard.NPF
     public class Media
     {
         [JsonProperty("url")]
-        public Uri Url { get; set; }
+        public string Url { get; set; }
+
+        [JsonProperty("identifier",NullValueHandling = NullValueHandling.Ignore)]
+        public string Identifier { get; set; }
 
         [JsonProperty("type",NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }

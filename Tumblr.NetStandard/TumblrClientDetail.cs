@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Tumblr.NetStandard.Api;
 using Tumblr.NetStandard.OAuth;
 
@@ -63,21 +64,26 @@ namespace Tumblr.NetStandard
             return string.Join("&", iterate.ToArray());
         }
 
-        public async Task<ApiResponse<bool>> MultipartFormRequest(Uri uri, object content, Dictionary<string,Stream> streams, HttpStatusCode acceptableCode = HttpStatusCode.Created)
+        public async Task<ApiResponse<T>> MultipartFormRequest<T>(Uri uri, object content, Dictionary<string,Stream> streams = null, HttpStatusCode acceptableCode = HttpStatusCode.Created)
         {
-            var requestContent = new MultipartContent();
+            var requestContent = new MultipartFormDataContent
+            {
+                new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8)
+            };
 
-            var result = await MakeStandardCall<object[]>(uri, async (c, u) =>
+            if (streams != null)
+            {
+                foreach (var stream in streams)
+                {
+                    requestContent.Add(new StreamContent(stream.Value), stream.Key);
+                }
+            }
+
+            return await MakeStandardCall<T>(uri, async (c, u) =>
             {
                 var response = await Client.PostAsync(uri, requestContent).ConfigureAwait(false);
                 return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             }, acceptableCode);
-            var newResponse = new ApiResponse<bool>
-            {
-                Meta = result.Meta,
-                Response = result.Success
-            };
-            return newResponse;
         }
 
         public async Task<ApiResponse<bool>> FormEncodedPostRequest(Uri uri, Dictionary<string, string> dictionary, HttpStatusCode acceptableCode = HttpStatusCode.Created)
