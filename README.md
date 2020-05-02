@@ -39,3 +39,9 @@ var posts = await client.ForBlog("staff.tumblr.com").Posts();
 ```csharp
 var liked = await client.ForPost(post).Like();
 ```
+
+##Returning Legacy Post types
+
+```csharp
+    Client.ReturnNpfPostLists = false;
+```
