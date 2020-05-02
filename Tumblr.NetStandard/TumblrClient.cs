@@ -81,5 +81,10 @@ namespace Tumblr.NetStandard
             var uri = ClientDetail.CreateUri("tagged", new Dictionary<string, string> { { "tag", tag } }.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<Post[]>(uri);
         }
+
+        public bool ReturnNpfPostLists {
+            get => ClientDetail.UseNpf;
+            set => ClientDetail.UseNpf = value;
+        }
     }
 }
