@@ -6,7 +6,7 @@ namespace Tumblr.NetStandard.Api
     public class BlogPostResult
     {
         [JsonProperty("_links", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string,ResponseLink> Links { get; set; }
+        public Dictionary<string, ResponseLink> Links { get; set; }
 
         [JsonProperty("blog")]
         public Blog Blog { get; set; }

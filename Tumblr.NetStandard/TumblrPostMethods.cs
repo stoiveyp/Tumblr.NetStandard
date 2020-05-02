@@ -9,14 +9,11 @@ namespace Tumblr.NetStandard
 {
     public class TumblrPostMethods:ITumblrPostMethods
     {
-        private ulong PostId { get; }
-        private string ReblogKey { get; }
+        private Post Post { get; }
         private TumblrClientDetail ClientDetail { get; }
 
-        public TumblrPostMethods(ulong postId, string reblogKey, TumblrClientDetail clientDetail)
+        public TumblrPostMethods(Post post, TumblrClientDetail clientDetail)
         {
-            PostId = postId;
-            ReblogKey = reblogKey;
             ClientDetail = clientDetail;
         }
 
@@ -27,9 +24,9 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<bool>());
             }
 
-            var dictionary = new Dictionary<string, string> { { "id", PostId.ToString() }, { "reblog_key", ReblogKey } };
+            var dictionary = new Dictionary<string, string> { { "id", Post.Id.ToString() }, { "reblog_key", Post.ReblogKey } };
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Like));
+            var uri = ClientDetail.CreateUri(UserApiPart.Like.ApiPath());
             return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
         }
 
@@ -40,29 +37,23 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<bool>());
             }
 
-            var dictionary = new Dictionary<string, string> { { "id", PostId.ToString() }, { "reblog_key", ReblogKey } };
+            var dictionary = new Dictionary<string, string> { { "id", Post.Id.ToString() }, { "reblog_key", Post.ReblogKey } };
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Unlike));
+            var uri = ClientDetail.CreateUri(UserApiPart.Unlike.ApiPath());
             return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
         }
 
-        private string ApiPath(UserApiPart blogPart)
+        public Task<ApiResponse<bool>> Delete()
         {
-            return $"user/{TranslatePart(blogPart)}";
-        }
-
-        private string TranslatePart(UserApiPart part)
-        {
-            return part switch
+            if (ClientDetail.UseApiKey)
             {
-                UserApiPart.Dashboard => "dashboard",
-                UserApiPart.Likes => "likes",
-                UserApiPart.Following => "following",
-                UserApiPart.Like => "like",
-                UserApiPart.Unlike => "unlike",
-                UserApiPart.Info => "info",
-                _ => "info"
-            };
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<bool>());
+            }
+
+            var dictionary = new Dictionary<string, string> { { "id", Post.Id.ToString() } };
+
+            var uri = ClientDetail.CreateUri(BlogApiPart.Delete.ApiPath(Post.BlogName));
+            return ClientDetail.FormEncodedPostRequest(uri, dictionary, HttpStatusCode.OK);
         }
     }
 }

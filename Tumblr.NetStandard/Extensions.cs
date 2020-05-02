@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using Tumblr.NetStandard.Api;
 
 namespace Tumblr.NetStandard
@@ -14,9 +18,9 @@ namespace Tumblr.NetStandard
             return query;
         }
 
-        public static string ApiPath(this BlogApiPart blogPart, string fullName)
+        public static string ApiPath(this BlogApiPart blogPart, string fullName, string suffix = null)
         {
-            return $"blog/{fullName}/{TranslatePart(blogPart)}";
+            return $"blog/{fullName}/{TranslatePart(blogPart)}{(string.IsNullOrWhiteSpace(suffix) ? string.Empty : "/")}{suffix}";
         }
 
         public static string ApiPath(this UserApiPart blogPart)
@@ -26,27 +30,19 @@ namespace Tumblr.NetStandard
 
         private static string TranslatePart(UserApiPart part)
         {
-            return part switch
-            {
-                UserApiPart.Dashboard => "dashboard",
-                UserApiPart.Likes => "likes",
-                UserApiPart.Following => "following",
-                UserApiPart.Follow => "follow",
-                UserApiPart.Unfollow => "unfollow",
-                UserApiPart.Like => "like",
-                UserApiPart.Unlike => "unlike",
-                _ => "info"
-            };
+            return ToEnumString(typeof(UserApiPart), part);
         }
 
         private static string TranslatePart(BlogApiPart part)
         {
-            return part switch
-            {
-                BlogApiPart.Posts => "posts",
-                BlogApiPart.Avatar => "avatar",
-                _ => "info"
-            };
+            return ToEnumString(typeof(BlogApiPart), part);
+        }
+
+        private static string ToEnumString(Type enumType, object type)
+        {
+            var name = Enum.GetName(enumType, type);
+            var enumMemberAttribute = ((EnumMemberAttribute[])enumType.GetTypeInfo().GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).FirstOrDefault();
+            return enumMemberAttribute?.Value ?? type.ToString();
         }
     }
 }

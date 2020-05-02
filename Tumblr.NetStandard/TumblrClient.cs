@@ -66,14 +66,9 @@ namespace Tumblr.NetStandard
             return new TumblrBlogMethods(blogName, ClientDetail);
         }
 
-        public ITumblrPostMethods ForPost(ulong id, string reblogKey)
-        {
-            return new TumblrPostMethods(id, reblogKey, ClientDetail);
-        }
-
         public ITumblrPostMethods ForPost(Post post)
         {
-            return ForPost(post.Id, post.ReblogKey);
+            return ForPost(post);
         }
 
         private void HandleError(string message)

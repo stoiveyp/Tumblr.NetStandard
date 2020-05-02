@@ -2,7 +2,7 @@
 
 namespace Tumblr.NetStandard.Api
 {
-    public class DashboardResult
+    public class PostsResult
     {
         [JsonProperty("posts")]
         public Post[] Posts { get; set; }

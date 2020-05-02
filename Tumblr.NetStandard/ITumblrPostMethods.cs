@@ -10,5 +10,7 @@ namespace Tumblr.NetStandard
     {
         Task<ApiResponse<bool>> Like();
         Task<ApiResponse<bool>> Unlike();
+
+        Task<ApiResponse<bool>> Delete();
     }
 }

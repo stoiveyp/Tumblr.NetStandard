@@ -14,22 +14,22 @@ namespace Tumblr.NetStandard
             ClientDetail = detail;
         }
 
-        public Task<ApiResponse<DashboardResult>> Dashboard()
+        public Task<ApiResponse<PostsResult>> Dashboard()
         {
             if (ClientDetail.UseApiKey)
             {
-                return Task.FromResult(ClientDetail.HandleNotLoggedIn<DashboardResult>());
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<PostsResult>());
             }
 
             var uri = ClientDetail.CreateUri(UserApiPart.Dashboard.ApiPath(), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
-            return ClientDetail.MakeGetRequest<DashboardResult>(uri);
+            return ClientDetail.MakeGetRequest<PostsResult>(uri);
         }
 
-        public Task<ApiResponse<DashboardResult>> Dashboard(int offset, int limit)
+        public Task<ApiResponse<PostsResult>> Dashboard(int offset, int limit)
         {
             if (ClientDetail.UseApiKey)
             {
-                return Task.FromResult(ClientDetail.HandleNotLoggedIn<DashboardResult>());
+                return Task.FromResult(ClientDetail.HandleNotLoggedIn<PostsResult>());
             }
 
             var posts = ClientDetail.StandardPostDictionary.AddNpf(ClientDetail);
@@ -37,7 +37,7 @@ namespace Tumblr.NetStandard
             posts.Add("limit", limit.ToString());
 
             var uri = ClientDetail.CreateUri(UserApiPart.Dashboard.ApiPath(), posts);
-            return ClientDetail.MakeGetRequest<DashboardResult>(uri);
+            return ClientDetail.MakeGetRequest<PostsResult>(uri);
         }
 
         public Task<ApiResponse<UserLikeResult>> Likes()

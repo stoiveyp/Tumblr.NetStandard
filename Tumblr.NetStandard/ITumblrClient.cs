@@ -14,8 +14,6 @@ namespace Tumblr.NetStandard
 
         ITumblrPostMethods ForPost(Post post);
 
-        ITumblrPostMethods ForPost(ulong id, string reblogKey);
-
         Task<ApiResponse<Post[]>> Tagged(string tag);
     }
 }
