@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Tumblr.NetStandard.NPF;
 using Tumblr.NetStandard.NPF.ContentBlocks;
 
 namespace Tumblr.NetStandard.Conversion
@@ -38,6 +39,10 @@ namespace Tumblr.NetStandard.Conversion
             return discriminator switch
             {
                 TextBlock.BlockType => new TextBlock(),
+                ImageBlock.BlockType => new ImageBlock(),
+                LinkBlock.BlockType => new LinkBlock(),
+                AudioBlock.BlockType => new AudioBlock(),
+                VideoBlock.BlockType => new VideoBlock(),
                 _ => (ContentBlock)new UnknownContentBlock(discriminator)
             };
         }

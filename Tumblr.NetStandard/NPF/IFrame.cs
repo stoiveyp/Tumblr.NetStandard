@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Tumblr.NetStandard.NPF.ContentBlocks
+namespace Tumblr.NetStandard.NPF
 {
     public class IFrame
     {

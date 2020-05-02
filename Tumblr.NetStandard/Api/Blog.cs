@@ -56,6 +56,6 @@ namespace Tumblr.NetStandard.Api
         public int TotalPosts { get; set; }
 
         [JsonExtensionData]
-        public Dictionary<string, object> Other { get; set; }
+        public Dictionary<string, object> OtherFields { get; set; }
     }
 }

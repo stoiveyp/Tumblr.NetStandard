@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Tumblr.NetStandard.Api;
+using Tumblr.NetStandard.NPF;
 using Tumblr.NetStandard.NPF.Formatting;
 
 namespace Tumblr.NetStandard.Notes

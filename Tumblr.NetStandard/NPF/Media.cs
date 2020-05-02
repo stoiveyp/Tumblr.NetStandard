@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Tumblr.NetStandard.NPF.ContentBlocks
+namespace Tumblr.NetStandard.NPF
 {
     public class Media
     {
@@ -25,5 +26,14 @@ namespace Tumblr.NetStandard.NPF.ContentBlocks
 
         [JsonProperty("has_original_dimensions",NullValueHandling = NullValueHandling.Ignore)]
         public bool? HasOriginalDimensions { get; set; }
+
+        [JsonProperty("poster",NullValueHandling = NullValueHandling.Ignore)]
+        public Media Poster { get; set; }
+
+        [JsonProperty("media_key",NullValueHandling = NullValueHandling.Ignore)]
+        public string MediaKey { get; set; }
+
+        [JsonExtensionData]
+        public Dictionary<string,object> OtherFields { get; set; }
     }
 }

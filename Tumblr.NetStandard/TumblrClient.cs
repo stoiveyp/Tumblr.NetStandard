@@ -13,6 +13,9 @@ namespace Tumblr.NetStandard
 
         public Action<string> OnError { get; set; }
 
+        private ITumblrUserMethods _user;
+        public ITumblrUserMethods User => _user ??= new TumblrUserMethods(ClientDetail);
+
         public TumblrClient(TumblrClientCredentials client) : this(null, client)
         {
 
@@ -57,9 +60,6 @@ namespace Tumblr.NetStandard
             ClientDetail.Client = new HttpClient(oAuthMessageHandler);
             ClientDetail.OnError = HandleError;
         }
-
-        private ITumblrUserMethods _user;
-        public ITumblrUserMethods User => _user ?? (_user = new TumblrUserMethods(ClientDetail));
 
         public ITumblrBlogMethods ForBlog(string blogName)
         {

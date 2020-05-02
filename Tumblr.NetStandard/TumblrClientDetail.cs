@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Tumblr.NetStandard.Api;
-using Tumblr.NetStandard.Conversion;
 using Tumblr.NetStandard.OAuth;
 
 namespace Tumblr.NetStandard

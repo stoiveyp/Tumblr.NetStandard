@@ -13,6 +13,6 @@ namespace Tumblr.NetStandard.NPF.ContentBlocks
         }
 
         [JsonExtensionData]
-        public Dictionary<string,object> Data { get; set; }
+        public Dictionary<string,object> OtherFields { get; set; }
     }
 }

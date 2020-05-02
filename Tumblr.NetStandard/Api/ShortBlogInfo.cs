@@ -5,27 +5,19 @@ using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.Api
 {
-    public class ShortBlogInfo
+    public class ShortBlogInfo : BlogIdentifier
     {
-        [JsonProperty("uuid")]
-        public string UUID { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
         [JsonProperty("title")]
         public string Title { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonProperty("url")]
-        public Uri Url { get; set; }
 
-        [JsonProperty("updated"),JsonConverter(typeof(EpochDateTimeHandler))]
+        [JsonProperty("updated"), JsonConverter(typeof(EpochDateTimeHandler))]
         public DateTime Updated { get; set; }
 
         [JsonExtensionData]
-        public Dictionary<string,object> OtherFields { get; set; }
+        public Dictionary<string, object> OtherFields { get; set; }
     }
 }
