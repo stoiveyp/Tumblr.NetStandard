@@ -5,57 +5,59 @@ using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.Api
 {
-    public class Blog
+    public class Blog:IAvatar
     {
-        [JsonProperty("uuid")]
+        [JsonProperty("uuid", NullValueHandling = NullValueHandling.Ignore)]
         public string UUID { get; set; }
 
-        [JsonProperty("title")]
+        [JsonProperty("title", NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
 
-        [JsonProperty("name")]
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
 
-        [JsonProperty("url")]
+        [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
         public Uri Url { get; set; }
 
-        [JsonProperty("description")]
+        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
         public string Description { get; set; }
 
-        [JsonProperty("ask")]
-        public bool IsAskEnabled { get; set; }
+        [JsonProperty("ask", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? IsAskEnabled { get; set; }
 
-        [JsonProperty("ask_anon")]
-        public bool IsAnonymousAskEnabled { get; set; }
+        [JsonProperty("ask_anon", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? IsAnonymousAskEnabled { get; set; }
 
         [JsonProperty("ask_page_title",NullValueHandling = NullValueHandling.Ignore)]
         public string AskPageTitle { get; set; }
 
-        [JsonProperty("can_chat")]
-        public bool CanChat { get; set; }
+        [JsonProperty("can_chat", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? CanChat { get; set; }
 
-        [JsonProperty("can_subscribe")]
-        public bool CanSubscribe { get; set; }
+        [JsonProperty("can_subscribe", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? CanSubscribe { get; set; }
 
-        [JsonProperty("updated"),JsonConverter(typeof(EpochDateTimeHandler))]
-        public DateTime Updated { get; set; }
+        [JsonProperty("updated", NullValueHandling = NullValueHandling.Ignore),JsonConverter(typeof(EpochDateTimeHandler))]
+        public DateTime? Updated { get; set; }
 
-        [JsonProperty("is_nsfw")]
-        public bool IsNSFW { get; set; }
+        [JsonProperty("is_nsfw", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? IsNSFW { get; set; }
 
-        [JsonProperty("posts")]
-        public int Posts { get; set; }
+        [JsonProperty("posts", NullValueHandling = NullValueHandling.Ignore)]
+        public int? Posts { get; set; }
 
-        [JsonProperty("share_likes")]
-        public bool ShareLikes { get; set; }
+        [JsonProperty("share_likes", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? ShareLikes { get; set; }
 
-        [JsonProperty("subscribed")]
-        public bool Subscribed { get; set; }
+        [JsonProperty("subscribed", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? Subscribed { get; set; }
 
-        [JsonProperty("total_posts")]
-        public int TotalPosts { get; set; }
+        [JsonProperty("total_posts", NullValueHandling = NullValueHandling.Ignore)]
+        public int? TotalPosts { get; set; }
 
         [JsonExtensionData]
         public Dictionary<string, object> OtherFields { get; set; }
+
+        [JsonIgnore] string IAvatar.BlogName => Name;
     }
 }

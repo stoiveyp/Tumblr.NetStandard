@@ -17,6 +17,6 @@ namespace Tumblr.NetStandard
         public int? Offset { get; set; }
 
         [JsonProperty("before",NullValueHandling = NullValueHandling.Ignore)]
-        public ulong Before { get; set; }
+        public ulong? Before { get; set; }
     }
 }

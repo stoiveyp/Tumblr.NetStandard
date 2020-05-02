@@ -14,6 +14,8 @@ namespace Tumblr.NetStandard.OAuth
 
         private static readonly Random Random = new Random();
 
+        public static HashFunction HmacSha1Implementation { get; set; }
+
         static string GenerateSignature(string consumerSecret, Uri uri, HttpMethod method, Token token, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var hmacKeyBase = consumerSecret.UrlEncode() + "&" + ((token == null) ? "" : token.Secret).UrlEncode();
@@ -33,9 +35,20 @@ namespace Tumblr.NetStandard.OAuth
                 "&" + uri.GetComponents(UriComponents.SchemeAndServer | UriComponents.Path, UriFormat.Unescaped).UrlEncode() +
                 "&" + stringParameter.UrlEncode();
 
-            var sha1 = HMAC.Create("HMAC_SHA1");
-            sha1.Key = Encoding.UTF8.GetBytes(hmacKeyBase);
-            var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(signatureBase));
+            byte[] hash = null;
+            var key = Encoding.UTF8.GetBytes(hmacKeyBase);
+            var sigBase = Encoding.UTF8.GetBytes(signatureBase);
+            if (HmacSha1Implementation != null)
+            {
+                hash = HmacSha1Implementation(key, sigBase);
+            }
+            else
+            {
+                var sha1 = HMAC.Create("HMAC_SHA1");
+                sha1.Key = key;
+                hash = sha1.ComputeHash(sigBase);
+            }
+            
             return Convert.ToBase64String(hash).UrlEncode();
         }
 

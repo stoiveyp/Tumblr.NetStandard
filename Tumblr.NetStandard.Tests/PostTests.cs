@@ -94,6 +94,12 @@ namespace Tumblr.NetStandard.Tests
                     ej.Value<JArray>("notes").Cast<JObject>().ToArray(),CheckObjectArray).ToArray();
             }
 
+            if (aj.ContainsKey("trail"))
+            {
+                var _ = aj.Value<JArray>("trail").Cast<JObject>().ToArray().Zip(
+                    ej.Value<JArray>("trail").Cast<JObject>().ToArray(), CheckObjectArray).ToArray();
+            }
+
             foreach (var pair in aj.Properties().OrderBy(p => p.Name).ToArray().Zip(ej.Properties().OrderBy(p=> p.Name).ToArray(), (ac, ex) => (ac, ex)))
             {
                 if (JToken.DeepEquals(pair.ac, pair.ex))

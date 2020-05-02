@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Tumblr.NetStandard.Api
 {
-    public class BlogIdentifier
+    public class BlogIdentifier:IAvatar
     {
         [JsonProperty("uuid")]
         public string UUID { get; set; }
@@ -13,5 +13,7 @@ namespace Tumblr.NetStandard.Api
 
         [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
         public Uri Url { get; set; }
+
+        [JsonIgnore] string IAvatar.BlogName => Name;
     }
 }

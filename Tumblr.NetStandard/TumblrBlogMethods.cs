@@ -46,7 +46,7 @@ namespace Tumblr.NetStandard
             {
                 if (!original.ContainsKey(prop.Name))
                 {
-                    original.Add(prop.Name, prop.Value<string>());
+                    original.Add(prop.Name, prop.Value.ToString());
                 }
             }
 

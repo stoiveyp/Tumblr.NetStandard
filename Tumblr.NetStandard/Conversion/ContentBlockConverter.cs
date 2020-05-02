@@ -18,6 +18,11 @@ namespace Tumblr.NetStandard.Conversion
         public override ContentBlock ReadJson(JsonReader reader, Type objectType, ContentBlock existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.String)
+            {
+                return new TextBlock{Text=reader.Value.ToString()};
+            }
+
             JObject obj;
             try
             {

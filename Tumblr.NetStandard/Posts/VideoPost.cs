@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Tumblr.NetStandard.Api;
+using Tumblr.NetStandard.NPF;
 
 namespace Tumblr.NetStandard.Posts
 {
@@ -35,5 +36,8 @@ namespace Tumblr.NetStandard.Posts
 
         [JsonIgnore]
         public Uri PreferredUrl => VideoUrl ?? Permalink ?? SourceUrl ?? PostLink;
+
+        [JsonProperty("trail", NullValueHandling = NullValueHandling.Ignore)]
+        public LegacyTrail[] Trail { get; set; }
     }
 }

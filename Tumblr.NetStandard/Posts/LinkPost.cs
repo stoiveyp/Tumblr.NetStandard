@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Tumblr.NetStandard.Api;
+using Tumblr.NetStandard.NPF;
 
 namespace Tumblr.NetStandard.Posts
 {
@@ -22,5 +23,8 @@ namespace Tumblr.NetStandard.Posts
 
         [JsonIgnore]
         public string LinkText => string.IsNullOrWhiteSpace(Title) ? Url : Title;
+
+        [JsonProperty("trail", NullValueHandling = NullValueHandling.Ignore)]
+        public LegacyTrail[] Trail { get; set; }
     }
 }

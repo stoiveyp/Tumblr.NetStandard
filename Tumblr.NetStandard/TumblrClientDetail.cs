@@ -41,7 +41,7 @@ namespace Tumblr.NetStandard
         {
             var builder = new UriBuilder("https", "api.tumblr.com")
             {
-                Path = $"/v2/{path}", 
+                Path = $"/v2/{path}",
                 Query = CreateQueryString(query)
             };
             return builder.Uri;
@@ -57,14 +57,14 @@ namespace Tumblr.NetStandard
 
             if (UseNpf && npfAware)
             {
-                queryValues.Add("npf",true.ToString().ToLower());
+                queryValues.Add("npf", true.ToString().ToLower());
             }
 
             var iterate = queryValues.Select(kvp => $"{System.Net.WebUtility.UrlEncode(kvp.Key)}={System.Net.WebUtility.UrlEncode(kvp.Value)}");
             return string.Join("&", iterate.ToArray());
         }
 
-        public async Task<ApiResponse<T>> MultipartFormRequest<T>(Uri uri, object content, Dictionary<string,Stream> streams = null, HttpStatusCode acceptableCode = HttpStatusCode.Created)
+        public async Task<ApiResponse<T>> MultipartFormRequest<T>(Uri uri, object content, Dictionary<string, Stream> streams = null, HttpStatusCode acceptableCode = HttpStatusCode.Created)
         {
             var requestContent = new MultipartFormDataContent
             {
@@ -109,33 +109,17 @@ namespace Tumblr.NetStandard
 
         public async Task<ApiResponse<T>> MakeStandardCall<T>(Uri uri, Func<HttpClient, Uri, Task<Stream>> getStream, HttpStatusCode acceptableCode = HttpStatusCode.OK)
         {
-            try
-            {
-                var stream = await getStream(Client, uri).ConfigureAwait(false);
+            var stream = await getStream(Client, uri).ConfigureAwait(false);
 
-                using var reader = new JsonTextReader(new StreamReader(stream, Encoding.UTF8));
-                var result = Serializer.Deserialize<ApiResponse<T>>(reader);
+            using var reader = new JsonTextReader(new StreamReader(stream, Encoding.UTF8));
+            var result = Serializer.Deserialize<ApiResponse<T>>(reader);
 
-                if (result.Meta.Code != acceptableCode)
-                {
-                    result.Success = false;
-                    OnError?.Invoke(result.Meta.Message);
-                }
-                return result;
-            }
-            catch (HttpRequestException)
+            if (result.Meta.Code != acceptableCode)
             {
-                var networkError = ErrorCall.NetworkError<T>();
-                OnError?.Invoke(networkError.Meta.Message);
-                return networkError;
+                result.Success = false;
+                OnError?.Invoke(result.Meta.Message);
             }
-            catch (Exception)
-            {
-                //TECHDEBT: Add Error Logs
-                var unknown = ErrorCall.Unknown<T>();
-                OnError?.Invoke(unknown.Meta.Message);
-                return unknown;
-            }
+            return result;
         }
     }
 }

@@ -14,5 +14,8 @@ namespace Tumblr.NetStandard.Posts
 
         [JsonProperty("layout",NullValueHandling = NullValueHandling.Ignore)]
         public LayoutBlock[] Layout { get; set; }
+
+        [JsonProperty("trail", NullValueHandling = NullValueHandling.Ignore)]
+        public Trail[] Trail { get; set; }
     }
 }

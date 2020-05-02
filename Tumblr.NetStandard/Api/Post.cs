@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Tumblr.NetStandard.Conversion;
+using Tumblr.NetStandard.NPF;
 
 namespace Tumblr.NetStandard.Api
 {
     [JsonConverter(typeof(PostConverter))]
-    public abstract class Post
+    public abstract class Post:IAvatar
     {
         [JsonProperty("type")]
         public abstract string Type { get; }
@@ -54,5 +55,7 @@ namespace Tumblr.NetStandard.Api
 
         [JsonExtensionData]
         public Dictionary<string, object> OtherFields { get; set; }
+
+        [JsonIgnore] string IAvatar.BlogName => BlogName;
     }
 }
