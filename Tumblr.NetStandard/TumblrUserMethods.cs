@@ -21,7 +21,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<DashboardResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Dashboard), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
+            var uri = ClientDetail.CreateUri(UserApiPart.Dashboard.ApiPath(), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<DashboardResult>(uri);
         }
 
@@ -36,7 +36,7 @@ namespace Tumblr.NetStandard
             posts.Add("offset", offset.ToString());
             posts.Add("limit", limit.ToString());
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Dashboard), posts);
+            var uri = ClientDetail.CreateUri(UserApiPart.Dashboard.ApiPath(), posts);
             return ClientDetail.MakeGetRequest<DashboardResult>(uri);
         }
 
@@ -47,7 +47,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<UserLikeResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Likes), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
+            var uri = ClientDetail.CreateUri(UserApiPart.Likes.ApiPath(), ClientDetail.StandardPostDictionary.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<UserLikeResult>(uri);
         }
 
@@ -58,7 +58,7 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<FollowingResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Following), new Dictionary<string, string> { { "offset", offset.ToString() } }.AddNpf(ClientDetail));
+            var uri = ClientDetail.CreateUri(UserApiPart.Following.ApiPath(), new Dictionary<string, string> { { "offset", offset.ToString() } }.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<FollowingResult>(uri);
         }
 
@@ -69,26 +69,8 @@ namespace Tumblr.NetStandard
                 return Task.FromResult(ClientDetail.HandleNotLoggedIn<UserInfoResult>());
             }
 
-            var uri = ClientDetail.CreateUri(ApiPath(UserApiPart.Info));
+            var uri = ClientDetail.CreateUri(UserApiPart.Info.ApiPath());
             return ClientDetail.MakeGetRequest<UserInfoResult>(uri);
-        }
-
-        private string ApiPath(UserApiPart blogPart)
-        {
-            return $"user/{TranslatePart(blogPart)}";
-        }
-
-        private string TranslatePart(UserApiPart part)
-        {
-            return part switch
-            {
-                UserApiPart.Dashboard => "dashboard",
-                UserApiPart.Likes => "likes",
-                UserApiPart.Following => "following",
-                UserApiPart.Like => "like",
-                UserApiPart.Unlike => "unlike",
-                _ => "info"
-            };
         }
     }
 }

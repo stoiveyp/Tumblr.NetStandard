@@ -7,5 +7,8 @@ namespace Tumblr.NetStandard
     {
         Task<ApiResponse<BlogPostResult>> Posts();
         Task<ApiResponse<BlogPostResult>> Posts(int offset, int limit);
+
+        Task<ApiResponse<bool>> Follow();
+        Task<ApiResponse<bool>> Unfollow();
     }
 }
