@@ -27,6 +27,6 @@ namespace Tumblr.NetStandard.NPF.ContentBlocks
         public string DisplayUrl { get; set; }
 
         [JsonProperty("poster",NullValueHandling = NullValueHandling.Ignore)]
-        public Media Poster { get; set; }
+        public Media[] Poster { get; set; }
     }
 }

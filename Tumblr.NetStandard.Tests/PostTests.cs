@@ -37,6 +37,32 @@ namespace Tumblr.NetStandard.Tests
         }
 
         [Fact]
+        public void StaffResponse()
+        {
+            var example = "StaffNPFResponse.json";
+            var response = Utility.ExampleFileContent<ApiResponse<BlogPostResult>>(example);
+            Assert.True(Utility.CompareJson(response, example, j => j["metadata"]));
+            Assert.True(Utility.CompareJson(response, example, j => j["response"]["blog"]));
+            Assert.True(Utility.CompareJson(response, example, j => j["response"]["total_posts"]));
+            Assert.True(Utility.CompareJson(response, example, j => j["response"]["_links"]));
+            var postsWork = Utility.CompareJson(response, example, j => j["response"]["posts"]);
+
+            if (!postsWork)
+            {
+                var actualArray = JObject.Parse(JsonConvert.SerializeObject(response.Response)).Value<JArray>("posts");
+                var expectedArray = JObject.Parse(Utility.ExampleFileContent(example))["response"].Value<JArray>("posts");
+
+                if (actualArray.Count != expectedArray.Count)
+                {
+                    throw new InvalidOperationException("Bad counts");
+                }
+
+                var count = actualArray.Cast<JObject>().Zip(expectedArray.Cast<JObject>(), CheckObjectArray).Count(b => b);
+                Assert.Equal(20, count);
+            }
+        }
+
+        [Fact]
         public void ResponseLegacy()
         {
             var example = "BlogPostResponse_Legacy.json";

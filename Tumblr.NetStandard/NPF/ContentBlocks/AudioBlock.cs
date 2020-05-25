@@ -19,7 +19,7 @@ namespace Tumblr.NetStandard.NPF.ContentBlocks
         public Media Media { get; set; }
 
         [JsonProperty("poster",NullValueHandling = NullValueHandling.Ignore)]
-        public Media Poster { get; set; }
+        public Media[] Poster { get; set; }
 
         [JsonProperty("title",NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
