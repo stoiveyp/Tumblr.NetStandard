@@ -10,5 +10,8 @@ namespace Tumblr.NetStandard.NPF.LayoutBlocks
 
         [JsonProperty("display")]
         public Row[] Display { get; set; }
+
+        [JsonProperty("truncate_after", NullValueHandling = NullValueHandling.Ignore)]
+        public int? TruncateAfter { get; set; }
     }
 }

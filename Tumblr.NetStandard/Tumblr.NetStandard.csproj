@@ -5,10 +5,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Steven Pears</Authors>
     <Description>A .NET Standard library for the Tumblr API</Description>
-    <PackageReleaseNotes>Fix NPF blocks and their use of media elements</PackageReleaseNotes>
+    <PackageReleaseNotes>Add missing TruncateAfter property to RowsLayout</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/stoiveyp/Tumblr.NetStandard</RepositoryUrl>
     <PackageProjectUrl>https://github.com/stoiveyp/Tumblr.NetStandard</PackageProjectUrl>
-    <Version>3.0.1</Version>
+    <Version>3.0.2</Version>
     <LangVersion>8</LangVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
