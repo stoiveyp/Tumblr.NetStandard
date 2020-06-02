@@ -53,15 +53,13 @@ namespace Tumblr.NetStandard
             return original;
         }
 
-        public Task<ApiResponse<BlogPostResult>> Posts(int offset, int pageSize)
+        public Task<ApiResponse<BlogPostResult>> Posts(int offset, int? limit = null)
         {
-            var posts = ClientDetail.StandardPostDictionary.AddNpf(ClientDetail);
-
-            posts.Add(nameof(offset), offset.ToString());
-            posts.Add("limit", pageSize.ToString());
-
-            var uri = ClientDetail.CreateUri(BlogApiPart.Posts.ApiPath(FullBlogName), posts);
-            return ClientDetail.MakeGetRequest<BlogPostResult>(uri);
+            return Posts(new BlogPostRequest
+            {
+                Offset = offset,
+                Limit = limit
+            });
         }
 
         public Task<ApiResponse<BlogFollowingResult>> Following()
@@ -70,13 +68,17 @@ namespace Tumblr.NetStandard
             return ClientDetail.MakeGetRequest<BlogFollowingResult>(uri);
         }
 
-        public Task<ApiResponse<BlogFollowingResult>> Following(int offset, int pageSize)
+        public Task<ApiResponse<BlogFollowingResult>> Following(int offset, int? limit = null)
         {
             var posts = new Dictionary<string, string>
             {
-                {nameof(offset), offset.ToString()},
-                {"limit", pageSize.ToString()}
+                {nameof(offset), offset.ToString()}
             };
+
+            if (limit.HasValue)
+            {
+                posts.Add("limit",limit.Value.ToString());
+            }
 
 
             var uri = ClientDetail.CreateUri(BlogApiPart.Following.ApiPath(FullBlogName), posts);
@@ -90,14 +92,17 @@ namespace Tumblr.NetStandard
             return ClientDetail.MakeGetRequest<BlogFollowersResult>(uri);
         }
 
-        public Task<ApiResponse<BlogFollowersResult>> Followers(int offset, int pageSize)
+        public Task<ApiResponse<BlogFollowersResult>> Followers(int offset, int? limit = null)
         {
             var posts = new Dictionary<string, string>
             {
-                {nameof(offset), offset.ToString()},
-                {"limit", pageSize.ToString()}
+                {nameof(offset), offset.ToString()}
             };
 
+            if (limit.HasValue)
+            {
+                posts.Add("limit",limit.Value.ToString());
+            }
 
             var uri = ClientDetail.CreateUri(BlogApiPart.Followers.ApiPath(FullBlogName), posts);
             return ClientDetail.MakeGetRequest<BlogFollowersResult>(uri);
@@ -146,7 +151,7 @@ namespace Tumblr.NetStandard
             return ClientDetail.MakeGetRequest<PostsResult>(uri);
         }
 
-        public Task<ApiResponse<PostsResult>> Submission(int offset, int pageSize)
+        public Task<ApiResponse<PostsResult>> Submission(int offset, int? limit = null)
         {
             if (ClientDetail.UseApiKey)
             {
@@ -155,9 +160,13 @@ namespace Tumblr.NetStandard
 
             var posts = new Dictionary<string, string>
             {
-                {nameof(offset), offset.ToString()},
-                {"limit", pageSize.ToString()}
+                {nameof(offset), offset.ToString()}
             };
+
+            if (limit.HasValue)
+            {
+                posts.Add("limit",limit.Value.ToString());
+            }
 
             var uri = ClientDetail.CreateUri(BlogApiPart.Submission.ApiPath(FullBlogName), posts.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<PostsResult>(uri);
@@ -174,7 +183,7 @@ namespace Tumblr.NetStandard
             return ClientDetail.MakeGetRequest<PostsResult>(uri);
         }
 
-        public Task<ApiResponse<PostsResult>> Queue(int offset, int pageSize)
+        public Task<ApiResponse<PostsResult>> Queue(int offset, int? limit = null)
         {
             if (ClientDetail.UseApiKey)
             {
@@ -183,9 +192,13 @@ namespace Tumblr.NetStandard
 
             var posts = new Dictionary<string, string>
             {
-                {nameof(offset), offset.ToString()},
-                {"limit", pageSize.ToString()}
+                {nameof(offset), offset.ToString()}
             };
+
+            if (limit.HasValue)
+            {
+                posts.Add("limit",limit.Value.ToString());
+            }
 
             var uri = ClientDetail.CreateUri(BlogApiPart.Queue.ApiPath(FullBlogName), posts.AddNpf(ClientDetail));
             return ClientDetail.MakeGetRequest<PostsResult>(uri);
