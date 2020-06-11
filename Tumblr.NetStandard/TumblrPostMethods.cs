@@ -14,6 +14,7 @@ namespace Tumblr.NetStandard
 
         public TumblrPostMethods(Post post, TumblrClientDetail clientDetail)
         {
+            Post = post;
             ClientDetail = clientDetail;
         }
 
