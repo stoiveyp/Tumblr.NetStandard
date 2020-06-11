@@ -68,7 +68,7 @@ namespace Tumblr.NetStandard
 
         public ITumblrPostMethods ForPost(Post post)
         {
-            return ForPost(post);
+            return new TumblrPostMethods(post, ClientDetail);
         }
 
         private void HandleError(string message)
