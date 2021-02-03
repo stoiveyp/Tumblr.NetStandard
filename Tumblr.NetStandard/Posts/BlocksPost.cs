@@ -4,7 +4,7 @@ using Tumblr.NetStandard.NPF;
 
 namespace Tumblr.NetStandard.Posts
 {
-    public class BlocksPost:Post
+    public class BlocksPost:Post, INpfContent
     {
         public const string PostType = "blocks";
         [JsonProperty("type")] public override string Type => PostType;

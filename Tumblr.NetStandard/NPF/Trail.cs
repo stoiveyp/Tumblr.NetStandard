@@ -6,7 +6,7 @@ using Tumblr.NetStandard.Conversion;
 
 namespace Tumblr.NetStandard.NPF
 {
-    public class Trail
+    public class Trail: INpfContent
     {
         [JsonProperty("content",NullValueHandling = NullValueHandling.Ignore)]
         public ContentBlock[] Content { get; set; }
