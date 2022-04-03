@@ -13,7 +13,7 @@ namespace Tumblr.NetStandard
             CredentialsHolder = tumblrOAuth2Credentials;
         }
 
-        public OAuth2HeaderHandler(TumblrOAuth2Credentials tumblrOAuth2Credentials)
+        public OAuth2HeaderHandler(TumblrOAuth2Credentials tumblrOAuth2Credentials):base(new HttpClientHandler())
         {
             CredentialsHolder = tumblrOAuth2Credentials;
         }
