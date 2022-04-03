@@ -5,16 +5,16 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Steven Pears</Authors>
     <Description>A .NET Standard library for the Tumblr API</Description>
-    <PackageReleaseNotes>BlocksPost and Trail now both implement INpfContent interface</PackageReleaseNotes>
+    <PackageReleaseNotes>Helper class for OAuth2</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/stoiveyp/Tumblr.NetStandard</RepositoryUrl>
     <PackageProjectUrl>https://github.com/stoiveyp/Tumblr.NetStandard</PackageProjectUrl>
-    <Version>3.2.0</Version>
+    <Version>3.3.0</Version>
     <LangVersion>8</LangVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
