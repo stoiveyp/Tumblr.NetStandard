@@ -27,12 +27,12 @@ namespace Tumblr.NetStandard
 
         }
 
-        public TumblrClient(TumblrClientCredentials client, TumblrCredentials token) : this(null, client, token)
+        public TumblrClient(TumblrClientCredentials client, TumblrBaseCredentials token) : this(null, client, token)
         {
 
         }
 
-        public TumblrClient(HttpMessageHandler handler, TumblrClientCredentials client, TumblrCredentials token)
+        public TumblrClient(HttpMessageHandler handler, TumblrClientCredentials client, TumblrBaseCredentials token)
         {
             if (client == null)
             {
@@ -44,20 +44,16 @@ namespace Tumblr.NetStandard
                 ClientCreds = client
             };
 
-
-            if (string.IsNullOrWhiteSpace(token?.Key) || string.IsNullOrWhiteSpace(token?.Secret))
+            if (token != null)
             {
-                ClientDetail.UseApiKey = true;
+                handler = token.Setup(ClientDetail, client, handler);
             }
             else
             {
-                ClientDetail.AccessToken = new AccessToken(token.Key, token.Secret);
+                ClientDetail.UseApiKey = true;
             }
 
-            var oAuthMessageHandler = handler == null
-                ? new OAuthMessageHandler(client, ClientDetail.AccessToken)
-                : new OAuthMessageHandler(handler, client, ClientDetail.AccessToken);
-            ClientDetail.Client = new HttpClient(oAuthMessageHandler);
+            ClientDetail.Client = handler == null ? new HttpClient() : new HttpClient(handler);
             ClientDetail.OnError = HandleError;
         }
 
