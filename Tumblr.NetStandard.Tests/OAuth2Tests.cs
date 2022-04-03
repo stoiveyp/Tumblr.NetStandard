@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Tumblr.NetStandard.Tests
@@ -22,17 +23,19 @@ namespace Tumblr.NetStandard.Tests
         }
 
         [Fact]
-        public void BuildsCodeUrlCorrect()
+        public async Task BuildsCodeFormCorrect()
         {
-            var uri = OAuth2.BuildAuthTokenUrl("cid", "cis", "12345");
-            Assert.Equal("https://api.tumblr.com/v2/oauth2/token?client_id=cid&client_secret=cis&grant_type=authorization_code&code=12345", uri.ToString());
+            var form = OAuth2.BuildAuthTokenForm("cid", "cis", "12345");
+            var output = await form.ReadAsStringAsync();
+            Assert.Equal("client_id=cid&client_secret=cis&grant_type=authorization_code&code=12345", output);
         }
 
         [Fact]
-        public void BuildsRefreshUrlCorrect()
+        public async Task BuildsRefreshFormCorrect()
         {
-            var uri = OAuth2.BuildRefreshTokenUrl("cid", "cis", "12345");
-            Assert.Equal("https://api.tumblr.com/v2/oauth2/token?client_id=cid&client_secret=cis&grant_type=refresh_token&refresh_token=12345", uri.ToString());
+            var form = OAuth2.BuildRefreshTokenForm("cid", "cis", "12345");
+            var output = await form.ReadAsStringAsync();
+            Assert.Equal("client_id=cid&client_secret=cis&grant_type=refresh_token&refresh_token=12345", output);
         }
     }
 }

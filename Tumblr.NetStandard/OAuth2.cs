@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace Tumblr.NetStandard
@@ -26,24 +27,28 @@ namespace Tumblr.NetStandard
             return builder.Uri;
         }
 
-        public static Uri BuildAuthTokenUrl(string clientId, string clientSecret, string code)
+        public static FormUrlEncodedContent BuildAuthTokenForm(string clientId, string clientSecret, string code)
         {
-            var builder = new UriBuilder(TokenUrl)
+            return new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                Query = $"client_id={clientId}&client_secret={clientSecret}&grant_type=authorization_code&code={code}"
-            };
+                {"client_id", clientId },
+                {"client_secret", clientSecret },
+                {"grant_type", "authorization_code" },
+                {"code", code }
 
-            return builder.Uri;
+            });
         }
 
-        public static Uri BuildRefreshTokenUrl(string clientId, string clientSecret, string refreshToken)
+        public static FormUrlEncodedContent BuildRefreshTokenForm(string clientId, string clientSecret, string refreshToken)
         {
-            var builder = new UriBuilder(TokenUrl)
+            return new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                Query = $"client_id={clientId}&client_secret={clientSecret}&grant_type=refresh_token&refresh_token={refreshToken}"
-            };
+                {"client_id", clientId },
+                {"client_secret", clientSecret },
+                {"grant_type", "refresh_token" },
+                {"refresh_token", refreshToken }
 
-            return builder.Uri;
+            });
         }
 
         public static Dictionary<string, string> ParseQuerystring(string query) =>
