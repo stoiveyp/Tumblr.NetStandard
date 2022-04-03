@@ -1,7 +1,17 @@
 # Tumblr.NetStandard
 A .NET Standard library for the Tumblr API
 
-## Create a new client
+## Create a new client - OAuth2 
+```csharp
+//Unauthorised client
+var credentials = new TumblrClientCredentials(clientId, null);
+var client = new TumblrClient(credentials);
+
+//authorisedClient
+var client = new TumblrClient(credentials, new TumblrOAuth2Credentials(accessToken));
+```
+
+## Create a new client - OAuth1
 
 ```csharp
 //Unauthorised client
@@ -12,7 +22,23 @@ var client = new TumblrClient(credentials);
 var client = new TumblrClient(credentials, tumblrCredentials);
 ```
 
-## OAuth Helper methods (Tumblr is still OAuth1.0a)
+## OAuth2 Helper Methods
+```csharp
+//View an authorize url
+LoginView.Source = OAuth2.BuildAuthorizeUri(
+    ClientId,
+    $"{OAuth2.Scopes.Basic} {OAuth2.Scopes.Write} {OAuth2.Scopes.OfflineAccess}",
+    CurrentState);
+
+//Use authorize token to get access token
+var content = OAuth2.BuildAuthTokenForm(ClientId, ClientSecret, code);
+var client = new HttpClient();
+var response = await client.PostAsync(OAuth2.TokenUrl,content);
+var detail = await response.Content.ReadAsStringAsync();
+
+```
+
+## OAuth1 Helper methods
 
 ```csharp
  var authorizer = new OAuthAuthorizer(credentials);
