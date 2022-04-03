@@ -4,7 +4,7 @@ A .NET Standard library for the Tumblr API
 ## Create a new client - OAuth2 
 ```csharp
 //Unauthorised client
-var credentials = new TumblrClientCredentials(clientId, null);
+var credentials = new TumblrClientCredentials(clientId);
 var client = new TumblrClient(credentials);
 
 //authorisedClient

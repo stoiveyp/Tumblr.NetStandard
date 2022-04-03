@@ -8,7 +8,7 @@
     <PackageReleaseNotes>TumblrClient now supports TumblrOAuth2Credentials</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/stoiveyp/Tumblr.NetStandard</RepositoryUrl>
     <PackageProjectUrl>https://github.com/stoiveyp/Tumblr.NetStandard</PackageProjectUrl>
-    <Version>3.5.0</Version>
+    <Version>3.5.1</Version>
     <LangVersion>8</LangVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>

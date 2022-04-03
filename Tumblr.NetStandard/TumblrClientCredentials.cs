@@ -6,6 +6,16 @@ namespace Tumblr.NetStandard
 {
     public class TumblrClientCredentials
     {
+        public TumblrClientCredentials(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            Id = id;
+        }
+
         public TumblrClientCredentials(string id, string secret)
         {
             if (string.IsNullOrWhiteSpace(id))
