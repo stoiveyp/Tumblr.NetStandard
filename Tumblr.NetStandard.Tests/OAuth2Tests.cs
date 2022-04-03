@@ -25,14 +25,14 @@ namespace Tumblr.NetStandard.Tests
         public void BuildsCodeUrlCorrect()
         {
             var uri = OAuth2.BuildAuthTokenUrl("cid", "cis", "12345");
-            Assert.Equal("https://www.tumblr.com/oauth2/token?client_id=cid&client_secret=cis&grant_type=authorization_code&code=12345", uri.ToString());
+            Assert.Equal("https://api.tumblr.com/v2/oauth2/token?client_id=cid&client_secret=cis&grant_type=authorization_code&code=12345", uri.ToString());
         }
 
         [Fact]
         public void BuildsRefreshUrlCorrect()
         {
             var uri = OAuth2.BuildRefreshTokenUrl("cid", "cis", "12345");
-            Assert.Equal("https://www.tumblr.com/oauth2/token?client_id=cid&client_secret=cis&grant_type=refresh_token&refresh_token=12345", uri.ToString());
+            Assert.Equal("https://api.tumblr.com/v2/oauth2/token?client_id=cid&client_secret=cis&grant_type=refresh_token&refresh_token=12345", uri.ToString());
         }
     }
 }

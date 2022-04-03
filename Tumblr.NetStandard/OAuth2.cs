@@ -9,7 +9,7 @@ namespace Tumblr.NetStandard
     public static class OAuth2
     {
         public const string AuthorizeUrl = "https://www.tumblr.com/oauth2/authorize";
-        public const string TokenUrl = "https://www.tumblr.com/oauth2/token";
+        public const string TokenUrl = "https://api.tumblr.com/v2/oauth2/token";
 
         public static Uri BuildAuthorizeUri(string clientId, string scopes, string state, string redirectUrl = null)
         {
