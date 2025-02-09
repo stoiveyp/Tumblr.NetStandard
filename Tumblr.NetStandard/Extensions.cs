@@ -23,14 +23,9 @@ namespace Tumblr.NetStandard
 
         public static string ApiPath(this UserApiPart userPart) => $"user/{TranslatePart(userPart)}";
 
-        public static string ApiPath(this CommunityApiPart communityPart) => $"communities/{TranslatePart(communityPart)}";
-
         private static string TranslatePart(UserApiPart part) => ToEnumString(typeof(UserApiPart), part);
-        }
 
         private static string TranslatePart(BlogApiPart part) => ToEnumString(typeof(BlogApiPart), part);
-
-        private static string TranslatePart(CommunityApiPart part) => ToEnumString(typeof(CommunityApiPart), part);
 
         private static string ToEnumString(Type enumType, object type)
         {
