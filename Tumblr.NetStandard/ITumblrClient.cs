@@ -14,6 +14,8 @@ namespace Tumblr.NetStandard
 
         ITumblrPostMethods ForPost(Post post);
 
+        ITumblrCommunityMethods ForCommunity(string handle);
+
         Task<ApiResponse<Post[]>> Tagged(string tag);
 
         bool ReturnNpfPostLists { get; set; }

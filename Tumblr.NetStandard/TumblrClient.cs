@@ -67,6 +67,11 @@ namespace Tumblr.NetStandard
             return new TumblrPostMethods(post, ClientDetail);
         }
 
+        public ITumblrCommunityMethods ForCommunity(string handle)
+        {
+            return new TumblrCommunityMethods(handle, ClientDetail);
+        }
+
         private void HandleError(string message)
         {
             OnError?.Invoke(message);
